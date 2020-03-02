@@ -5,14 +5,14 @@ rule StringTie_Assemble:
   input:
     bam = "hisat2/{sample}.sorted.bam",
     ref_gtf = "Gene_annotation/" + config["assembly"] + ".ensGene.gtf"
-  params :
+  params:
     str = config["strandness"]
   output:
     "StringTie/{sample}.assemble.gtf"
   conda:
     "../envs/stringtie.yaml"
   shell:
-    "stringtie {param.str} {input.bam} -G {input.ref_gtf} -o {output}"
+    "stringtie {params.str} {input.bam} -G {input.ref_gtf} -o {output}"
     
 
 rule StringTie_Merge:
