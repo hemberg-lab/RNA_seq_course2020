@@ -21,17 +21,36 @@ rule hisat2_Genome_index:  #This is a rule and represent the first step of mappi
     shell:
         "hisat2-build -p {threads} {input} Genome/Index/dm6 2> {log}"
 
-rule hisat2_to_Genome:
-    input:
-        fastq = "FASTQ/{sample}.fastq.gz",
-        genome = "Genome/Index/dm6.1.ht2"
-    output:
-        temp("hisat2/{sample}.sam")
-    threads: 3
-    conda:
-        "envs/core.yaml"
-    shell:
-        "hisat2 -p 3 -U {input.fastq} -x  Genome/Index/dm6  > {output} "
+
+if str2bool(config["paired_end"])==False:
+        
+    rule hisat2_to_Genome:
+        input:
+            fastq = "FASTQ/{sample}.fastq.gz",
+            genome = "Genome/" + config["assembly"] + ".fa",
+        output:
+            temp("hisat2/{sample}.sam")
+        threads: 3
+        conda:
+            "envs/core.yaml"
+        shell:
+            "hisat2 -p 3 -U {input.fastq} -x  Genome/Index/dm6  > {output} "
+            
+elif str2bool(config["paired_end"])==True:
+    
+    rule hisat2_to_Genome:
+        input:
+            rd1 = "FASTQ/{sample}_1.fastq.gz",
+            rd2 = "FASTQ/{sample}_2.fastq.gz",
+            genome = "Genome/" + config["assembly"] + ".fa",
+        output:
+            temp("hisat2/{sample}.sam")
+        threads: 3
+        conda:
+            "envs/core.yaml"
+        shell:
+            "hisat2 -p 3 -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/dm6  > {output} "
+
 
 rule samTobam:
     input:
