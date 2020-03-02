@@ -1,13 +1,15 @@
 rule StringTie_Assemble:
   input:
     bam = "hisat2/{sample}.sorted.bam",
-    ref_gtf = "Gene_annotation/dm6.ensGene.gtf"
+    ref_gtf = "Gene_annotation/" + config["assembly"] + ".ensGene.gtf"
+  params :
+    str = config["strandness"]
   output:
     "StringTie/{sample}.assemble.gtf"
   conda:
     "../envs/stringtie.yaml"
   shell:
-    "stringtie {input.bam} -G {input.ref_gtf} -o {output}"
+    "stringtie {param.str} {input.bam} -G {input.ref_gtf} -o {output}"
     
 
 rule StringTie_Merge:
@@ -24,8 +26,8 @@ rule StringTie_Merge:
 rule StringTie_gffcompare:
   input:
     merged_gtf = "StringTie/merged.assemble.gtf",
-    ref_gtf = "Gene_annotation/dm6.ensGene.gtf",
-    genome = "Genome/dm6.fa"
+    ref_gtf = "Gene_annotation/" + config["assembly"] + ".ensGene.gtf"
+    genome = "Genome/" + config["assembly"] + ".fa"
   params:
     output_prefix = "gffcompare/gffcompare"
   output:
