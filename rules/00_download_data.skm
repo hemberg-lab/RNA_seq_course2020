@@ -38,7 +38,7 @@ if os.path.isfile(config["accession_list"]):
             RUN = row[0]
             SAMPLES.add(RUN)
             file_name = "download/" + RUN + ".download.sh"
-            command = "fastq-dump.2.9.1 --split-files -O FASTQ "
+            command = "fastq-dump.2.9.1 --split-files -O FASTQ --gzip "
 
             if len(glob.glob(file_name))==0: #Check if the file is there, as if this file is overwriten everything will start from scratch
 
@@ -55,10 +55,10 @@ if os.path.isfile(config["accession_list"]):
                     download_file.write( "if [ -f FASTQ/${srr}_1.fastq ]; then mv FASTQ/${srr}_1.fastq FASTQ/${srr}.fastq ; elif [ -f FASTQ/${srr}_2.fastq ]; then mv FASTQ/${srr}_2.fastq FASTQ/${srr}.fastq; fi"  + "\n")
                     download_file.write("gzip FASTQ/${srr}.fastq"+ "\n")
 
-                elif str2bool(config["paired_end"])==True:
+                #elif str2bool(config["paired_end"])==True:
                 
-                    download_file.write("gzip FASTQ/${srr}_1.fastq"+ "\n")
-                    download_file.write("gzip FASTQ/${srr}_2.fastq"+ "\n")
+                    #download_file.write("gzip FASTQ/${srr}_1.fastq"+ "\n")
+                    #download_file.write("gzip FASTQ/${srr}_2.fastq"+ "\n")
 
 
 if os.path.isfile('download/genome.download.sh')==False:
