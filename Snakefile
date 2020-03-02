@@ -10,16 +10,16 @@ include: "rules/00_download_data.skm"
     
 rule hisat2_Genome_index:  #This is a rule and represent the first step of mapping the reads with hisat (indexing the genome)
     input:
-        "Genome/dm6.fa"
+        "Genome/" + config["assembly"] + ".fa"
     output:
-        "Genome/Index/dm6.1.ht2"
+        "Genome/Index/" + config["assembly"] + ".1.ht2"
     threads: 7
     conda:
         "envs/core.yaml"
     log:
         "logs/hisat2_Genome_index.log"
     shell:
-        "hisat2-build -p {threads} {input} Genome/Index/dm6 2> {log}"
+        "hisat2-build -p {threads} {input} Genome/Index/" + config["assembly"]  + " 2> {log}"
 
 
 if str2bool(config["paired_end"])==False:
@@ -34,7 +34,7 @@ if str2bool(config["paired_end"])==False:
         conda:
             "envs/core.yaml"
         shell:
-            "hisat2 -p 3 -U {input.fastq} -x  Genome/Index/dm6  > {output} "
+            "hisat2 -p 3 -U {input.fastq} -x  Genome/Index/" + config["assembly"]  + "  > {output} "
             
 elif str2bool(config["paired_end"])==True:
     
@@ -49,7 +49,7 @@ elif str2bool(config["paired_end"])==True:
         conda:
             "envs/core.yaml"
         shell:
-            "hisat2 -p 3 -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/dm6  > {output} "
+            "hisat2 -p 3 -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"]  + "  > {output} "
 
 
 rule samTobam:
@@ -78,7 +78,7 @@ rule bamstats:
 
 rule featureCounts:
     input:
-        gtf = "Gene_annotation/dm6.ensGene.gtf",
+        gtf = "Gene_annotation/" + config["assembly"]  + ".ensGene.gtf",
         bam = expand("hisat2/{sample}.sorted.bam", sample=SAMPLES)
     output:
         "featureCounts/total_samples.gene_count.txt"
