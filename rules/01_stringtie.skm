@@ -1,3 +1,6 @@
+if ("strandness" in config)==False:
+  config["strandness"]=""
+
 rule StringTie_Assemble:
   input:
     bam = "hisat2/{sample}.sorted.bam",
