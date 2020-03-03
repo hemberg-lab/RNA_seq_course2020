@@ -34,7 +34,7 @@ if str2bool(config["paired_end"])==False:
         conda:
             "envs/core.yaml"
         shell:
-            "hisat2 -p 3 -U {input.fastq} -x  Genome/Index/" + config["assembly"]  "  > {output} "
+            "hisat2 -p 3 -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output} "
             
 elif str2bool(config["paired_end"])==True:
     
@@ -49,7 +49,7 @@ elif str2bool(config["paired_end"])==True:
         conda:
             "envs/core.yaml"
         shell:
-            "hisat2 -p 3 -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"]  "  > {output} "
+            "hisat2 -p 3 -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"] +  "  > {output} "
 
 
 rule samTobam:
