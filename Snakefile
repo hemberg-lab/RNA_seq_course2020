@@ -30,7 +30,7 @@ if str2bool(config["paired_end"])==False:
             genome = "Genome/" + config["assembly"] + ".fa",
         output:
             temp("hisat2/{sample}.sam")
-        threads: 3
+        threads: 6
         conda:
             "envs/core.yaml"
         shell:
@@ -45,7 +45,7 @@ elif str2bool(config["paired_end"])==True:
             genome = "Genome/" + config["assembly"] + ".fa",
         output:
             temp("hisat2/{sample}.sam")
-        threads: 3
+        threads: 6
         conda:
             "envs/core.yaml"
         shell:
