@@ -4,7 +4,7 @@ if ("strandness" in config)==False:
 rule StringTie_Assemble:
   input:
     bam = "hisat2/{sample}.sorted.bam",
-    ref_gtf = "Gene_annotation/" + config["assembly"] + ".ensGene.gtf"
+    ref_gtf = "Gene_annotation/" + config["assembly"] + ".gtf"
   params:
     str = config["strandness"]
   output:
@@ -29,7 +29,7 @@ rule StringTie_Merge:
 rule StringTie_gffcompare:
   input:
     merged_gtf = "StringTie/merged.assemble.gtf",
-    ref_gtf = "Gene_annotation/" + config["assembly"] + ".ensGene.gtf",
+    ref_gtf = "Gene_annotation/" + config["assembly"] + ".gtf",
     genome = "Genome/" + config["assembly"] + ".fa"
   params:
     output_prefix = "gffcompare/gffcompare"
