@@ -31,10 +31,12 @@ if str2bool(config["paired_end"])==False:
         output:
             temp("hisat2/{sample}.sam")
         threads: 6
+        log:
+            "logs/hisat2_{sample}.log"       
         conda:
             "envs/core.yaml"
         shell:
-            "hisat2 -p 3 -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output} "
+            "hisat2 -p 3 -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
             
 elif str2bool(config["paired_end"])==True:
     
@@ -46,10 +48,12 @@ elif str2bool(config["paired_end"])==True:
         output:
             temp("hisat2/{sample}.sam")
         threads: 6
+        log:
+            "logs/hisat2_{sample}.log"    
         conda:
             "envs/core.yaml"
         shell:
-            "hisat2 -p 3 -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"] +  "  > {output} "
+            "hisat2 -p 3 -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
 
 
 rule samTobam:
