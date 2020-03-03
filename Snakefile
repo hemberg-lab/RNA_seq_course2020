@@ -27,14 +27,14 @@ if str2bool(config["paired_end"])==False:
     rule hisat2_to_Genome:
         input:
             fastq = "FASTQ/{sample}.fastq.gz",
-            genome = "Genome/" + config["assembly"] + ".fa",
+            genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
         output:
             temp("hisat2/{sample}.sam")
         threads: 6
         conda:
             "envs/core.yaml"
         shell:
-            "hisat2 -p 3 -U {input.fastq} -x  Genome/Index/" + config["assembly"]  + "  > {output} "
+            "hisat2 -p 3 -U {input.fastq} -x  Genome/Index/" + config["assembly"]  "  > {output} "
             
 elif str2bool(config["paired_end"])==True:
     
@@ -42,14 +42,14 @@ elif str2bool(config["paired_end"])==True:
         input:
             rd1 = "FASTQ/{sample}_1.fastq.gz",
             rd2 = "FASTQ/{sample}_2.fastq.gz",
-            genome = "Genome/" + config["assembly"] + ".fa",
+            genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
         output:
             temp("hisat2/{sample}.sam")
         threads: 6
         conda:
             "envs/core.yaml"
         shell:
-            "hisat2 -p 3 -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"]  + "  > {output} "
+            "hisat2 -p 3 -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"]  "  > {output} "
 
 
 rule samTobam:
