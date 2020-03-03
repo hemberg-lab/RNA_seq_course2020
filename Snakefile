@@ -78,7 +78,7 @@ rule bamstats:
 
 rule featureCounts:
     input:
-        gtf = "Gene_annotation/" + config["assembly"]  + ".ensGene.gtf",
+        gtf = "Gene_annotation/" + config["assembly"]  + ".gtf",
         bam = expand("hisat2/{sample}.sorted.bam", sample=SAMPLES)
     output:
         "featureCounts/total_samples.gene_count.txt"
