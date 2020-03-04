@@ -12,20 +12,43 @@ rule whippet_index:
     shell:
         "julia {params.bin}/whippet-index.jl --fasta {input.genome} --gtf {input.gtf} --index {output.index} 2> {log}"
 
+if str2bool(config["paired_end"])==False:
 
-rule  whippet_quant:
-    input:
-        fastq = "FASTQ/{sample}.fastq.gz",
-        index = "Whippet/Index/whippet.jls"
-    params:
-        bin = config["whippet_bin_folder"],
-        output = "Whippet/Quant/{sample}",
-        other_flags = "--circ"
-    output:
-        "Whippet/Quant/{sample}.gene.tpm.gz",
-        "Whippet/Quant/{sample}.isoform.tpm.gz",
-        "Whippet/Quant/{sample}.jnc.gz",
-        "Whippet/Quant/{sample}.map.gz",
-        "Whippet/Quant/{sample}.psi.gz"
-    shell:
-        "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags}"
+    rule  whippet_quant:
+        input:
+            fastq = "FASTQ/{sample}.fastq.gz",
+            index = "Whippet/Index/whippet.jls"
+        params:
+            bin = config["whippet_bin_folder"],
+            output = "Whippet/Quant/{sample}",
+            other_flags = "--circ"
+        output:
+            "Whippet/Quant/{sample}.gene.tpm.gz",
+            "Whippet/Quant/{sample}.isoform.tpm.gz",
+            "Whippet/Quant/{sample}.jnc.gz",
+            "Whippet/Quant/{sample}.map.gz",
+            "Whippet/Quant/{sample}.psi.gz"
+        shell:
+            "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags}"
+
+
+elif str2bool(config["paired_end"])==True:
+
+    rule  whippet_quant:
+        input:
+            rd1 = "FASTQ/{sample}_1.fastq.gz",
+            rd2 = "FASTQ/{sample}_2.fastq.gz",
+            index = "Whippet/Index/whippet.jls"
+        params:
+            bin = config["whippet_bin_folder"],
+            output = "Whippet/Quant/{sample}",
+            other_flags = "--circ"
+        output:
+            "Whippet/Quant/{sample}.gene.tpm.gz",
+            "Whippet/Quant/{sample}.isoform.tpm.gz",
+            "Whippet/Quant/{sample}.jnc.gz",
+            "Whippet/Quant/{sample}.map.gz",
+            "Whippet/Quant/{sample}.psi.gz"
+        shell:
+            "julia {params.bin}/whippet-quant.jl {input.rd1} {input.rd2} -x {input.index} -o {params.output} {params.other_flags}"
+            
