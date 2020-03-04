@@ -3,6 +3,8 @@
 #compare_name = 'neuron_vs_glia'
 
 
+import yaml
+
 if "whippet_delta" in config:
    with open(config["whippet_delta"], 'r') as stream:
       whippet_delta = yaml.safe_load(stream)
