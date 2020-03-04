@@ -7,6 +7,12 @@ if "whippet_delta" in config:
    with open(config["whippet_delta"], 'r') as stream:
       whippet_delta = yaml.safe_load(stream)
 
+comparison_names = whippet_delta.keys()
+
+rule differential_inclusion:
+   input:
+      expand("Whippet/Delta/{comparison_name}.diff.gz", comparison_name=comparison_names)
+
 
 #rule whippet_delta:
 #    input:
