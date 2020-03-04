@@ -1,8 +1,6 @@
-
-
 rule whippet_index:
     input:
-        genome = "Genome/dm6.fa",
+        genome = "Genome/" + config["assembly"] + ".fa",
         gtf = "gffcompare/extended_ref_annotation.gtf"
     params:
         bin = config["whippet_bin_folder"]
