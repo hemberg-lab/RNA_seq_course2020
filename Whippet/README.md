@@ -6,7 +6,7 @@ First, you need to create a environment that has `snakemake` and the version of 
 
 Then, activate the newly created enviroment:
 
-`source activate julia_0.6.1`
+`conda activate julia_0.6.1`
 
 Enter julia's interactive mode:
 
