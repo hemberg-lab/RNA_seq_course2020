@@ -7,6 +7,10 @@ include: "rules/00_download_data.skm"
 # genome (hisat2) and count the reads that map to each gene (featureCounts). 
 #
 #########################################################################################    
+ 
+if "whippet_delta" in config:
+    with open(config["whippet_delta"], 'r') as stream:
+        whippet_delta = yaml.safe_load(stream)   
     
 rule hisat2_Genome_index:  #This is a rule and represent the first step of mapping the reads with hisat (indexing the genome)
     input:
