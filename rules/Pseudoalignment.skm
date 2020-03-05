@@ -1,17 +1,18 @@
 rule get_transcriptome:
     input:
-        genome = "Genome/dm6.fa",
-        transcripts = "Gene_annotation/dm6.Ensembl.genes.bed12"
+        genome = "Genome/" + config["assembly"] + ".fa",
+        gff_annotation = "/Resuts/hisat2-StringTie-Whippet/gffcompare/extended_ref_annotation.gtf", 
+        #transcripts = "Gene_annotation/dm6.Ensembl.genes.bed12"
     output:
-        "Transcriptome/dm6.transcripts.fa"
+        "Transcriptome/" + config["assembly"] + ".transcripts.fa"
     conda: "../envs/core.yaml"
     shell:
-        "bedtools getfasta -fi {input.genome} -bed {input.transcripts} -name -s > {output}"
-
+        #"bedtools getfasta -fi {input.genome} -bed {input.transcripts} -name -s > {output}"
+        "bedtools getfasta -fi {input.genome} -bed {input.gff_annotation} -name -s > {output}"
 
 rule salmon_index:
     input:
-        "Transcriptome/dm6.transcripts.fa"
+        "Transcriptome/" + config["assembly"] + ".transcripts.fa"
     output:
         directory("salmon/transcriptome_index")
     log:
