@@ -4,7 +4,7 @@ rule get_transcriptome:
         gtf = "gffcompare/extended_ref_annotation.gtf", 
         #transcripts = "Gene_annotation/dm6.Ensembl.genes.bed12"
     output:
-        "Transcriptome/" + config["assembly"] + ".transcripts.fa"
+        "gffcompare/extended_ref_annotation.fa"
     conda: "../envs/core.yaml"
     shell:
         #"bedtools getfasta -fi {input.genome} -bed {input.transcripts} -name -s > {output}"
@@ -12,7 +12,7 @@ rule get_transcriptome:
 
 rule salmon_index:
     input:
-        "Transcriptome/" + config["assembly"] + ".transcripts.fa"
+        "gffcompare/extended_ref_annotation.fa"
     output:
         directory("salmon/transcriptome_index")
     log:
