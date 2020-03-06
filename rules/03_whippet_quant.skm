@@ -12,6 +12,17 @@ rule whippet_index:
     shell:
         "julia {params.bin}/whippet-index.jl --fasta {input.genome} --gtf {input.gtf} --index {output.index} 2> {log}"
 
+
+def circ():
+    param = ""
+    
+    if "backsplicing" in config:
+        if str2bool(config["backsplicing"]):
+            param = "--circ"
+            
+    return(param)
+    
+
 if str2bool(config["paired_end"])==False:
 
     rule  whippet_quant:
@@ -21,7 +32,7 @@ if str2bool(config["paired_end"])==False:
         params:
             bin = config["whippet_bin_folder"],
             output = "Whippet/Quant/{sample}",
-            other_flags = "--circ"
+            other_flags = circ()
         output:
             "Whippet/Quant/{sample}.gene.tpm.gz",
             "Whippet/Quant/{sample}.isoform.tpm.gz",
@@ -42,7 +53,7 @@ elif str2bool(config["paired_end"])==True:
         params:
             bin = config["whippet_bin_folder"],
             output = "Whippet/Quant/{sample}",
-            other_flags = "--circ"
+            other_flags = circ()
         output:
             "Whippet/Quant/{sample}.gene.tpm.gz",
             "Whippet/Quant/{sample}.isoform.tpm.gz",
