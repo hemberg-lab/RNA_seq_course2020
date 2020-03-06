@@ -1,12 +1,12 @@
-rule whippet_index:
+rule whippet_index_ref:
     input:
         genome = "Genome/" + config["assembly"] + ".fa",
-        gtf = "gffcompare/extended_ref_annotation.gtf"
+        gtf = "Gene_annotation/" + config["assembly"] + ".gtf"
     params:
         bin = config["whippet_bin_folder"]
     output:
-        index = "Whippet/Index/whippet.jls",
-        exons = "Whippet/Index/whippet.jls.exons.tab.gz"
+        index = "Whippet/Index/ref/whippet.jls",
+        exons = "Whippet/Index/ref/whippet.jls.exons.tab.gz"
     log:
         "logs/whippet_index.log"
     shell:
@@ -28,17 +28,17 @@ if str2bool(config["paired_end"])==False:
     rule  whippet_quant:
         input:
             fastq = "FASTQ/{sample}.fastq.gz",
-            index = "Whippet/Index/whippet.jls"
+            index = "Whippet/Index/ref/whippet.jls"
         params:
             bin = config["whippet_bin_folder"],
-            output = "Whippet/Quant/{sample}",
+            output = "Whippet/Quant/ref/{sample}",
             other_flags = circ()
         output:
-            "Whippet/Quant/{sample}.gene.tpm.gz",
-            "Whippet/Quant/{sample}.isoform.tpm.gz",
-            "Whippet/Quant/{sample}.jnc.gz",
-            "Whippet/Quant/{sample}.map.gz",
-            "Whippet/Quant/{sample}.psi.gz"
+            "Whippet/Quant/ref/{sample}.gene.tpm.gz",
+            "Whippet/Quant/ref/{sample}.isoform.tpm.gz",
+            "Whippet/Quant/ref/{sample}.jnc.gz",
+            "Whippet/Quant/ref/{sample}.map.gz",
+            "Whippet/Quant/ref/{sample}.psi.gz"
         shell:
             "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags}"
 
@@ -49,16 +49,16 @@ elif str2bool(config["paired_end"])==True:
         input:
             rd1 = "FASTQ/{sample}_1.fastq.gz",
             rd2 = "FASTQ/{sample}_2.fastq.gz",
-            index = "Whippet/Index/whippet.jls"
+            index = "Whippet/Index/ref/whippet.jls"
         params:
             bin = config["whippet_bin_folder"],
-            output = "Whippet/Quant/{sample}",
+            output = "Whippet/Quant/ref/{sample}",
             other_flags = circ()
         output:
-            "Whippet/Quant/{sample}.gene.tpm.gz",
-            "Whippet/Quant/{sample}.isoform.tpm.gz",
-            "Whippet/Quant/{sample}.jnc.gz",
-            "Whippet/Quant/{sample}.map.gz",
-            "Whippet/Quant/{sample}.psi.gz"
+            "Whippet/Quant/ref/{sample}.gene.tpm.gz",
+            "Whippet/Quant/ref/{sample}.isoform.tpm.gz",
+            "Whippet/Quant/ref/{sample}.jnc.gz",
+            "Whippet/Quant/ref/{sample}.map.gz",
+            "Whippet/Quant/ref/{sample}.psi.gz"
         shell:
             "julia {params.bin}/whippet-quant.jl {input.rd1} {input.rd2} -x {input.index} -o {params.output} {params.other_flags}"
