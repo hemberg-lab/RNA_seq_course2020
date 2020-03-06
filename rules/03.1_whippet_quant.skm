@@ -25,7 +25,7 @@ def circ():
 
 if str2bool(config["paired_end"])==False:
 
-    rule  whippet_quant:
+    rule  whippet_quant_ref:
         input:
             fastq = "FASTQ/{sample}.fastq.gz",
             index = "Whippet/Index/ref/whippet.jls"
@@ -45,7 +45,7 @@ if str2bool(config["paired_end"])==False:
 
 elif str2bool(config["paired_end"])==True:
 
-    rule  whippet_quant:
+    rule  whippet_quant_ref:
         input:
             rd1 = "FASTQ/{sample}_1.fastq.gz",
             rd2 = "FASTQ/{sample}_2.fastq.gz",
