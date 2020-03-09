@@ -8,3 +8,5 @@ dependencies:
   - subread
   - gnuplot
   - bedtools=2.29.2
+  - biopython
+  - gffread
