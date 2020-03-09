@@ -2,13 +2,12 @@ rule get_transcriptome:
     input:
         genome = "Genome/" + config["assembly"] + ".fa",
         gtf = "gffcompare/extended_ref_annotation.gtf", 
-        #transcripts = "Gene_annotation/dm6.Ensembl.genes.bed12"
     output:
         "gffcompare/extended_ref_annotation.fa"
     conda: "../envs/core.yaml"
     shell:
-        #"bedtools getfasta -fi {input.genome} -bed {input.transcripts} -name -s > {output}"
-        "bedtools getfasta -fi {input.genome} -bed {input.gtf} -name -s > {output}"
+        "gffread -w {output} -g {input}"
+        #"bedtools getfasta -fi {input.genome} -bed {input.gtf} -name -s > {output}"
 
 rule salmon_index:
     input:
