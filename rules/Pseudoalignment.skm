@@ -24,21 +24,44 @@ rule salmon_index:
     wrapper:
         "0.49.0/bio/salmon/index"
         
-rule salmon_quant_reads:
-    input:
-        r = "FASTQ/{sample}.fastq.gz",
-        index = "salmon/transcriptome_index"
-    output:
-        quant = 'salmon/{sample}/quant.sf',
-        lib = 'salmon/{sample}/lib_format_counts.json'
-    log:
-        'logs/salmon/{sample}.log'
-    params:
-        # optional parameters
-        #libtype ="A",
-        #zip_ext = bz2 # req'd for bz2 files ('bz2'); optional for gz files('gz')
-        extra=""
-    threads: 2
-    wrapper:
-        "0.49.0/bio/salmon/quant"
+if str2bool(config["paired_end"])==False:        
+        
+    rule salmon_quant_reads:
+        input:
+            r = "FASTQ/{sample}.fastq.gz",
+            index = "salmon/transcriptome_index"
+        output:
+            quant = 'salmon/{sample}/quant.sf',
+            lib = 'salmon/{sample}/lib_format_counts.json'
+        log:
+            'logs/salmon/{sample}.log'
+        params:
+            # optional parameters
+            #libtype ="A",
+            #zip_ext = bz2 # req'd for bz2 files ('bz2'); optional for gz files('gz')
+            extra=""
+        threads: 2
+        wrapper:
+            "0.49.0/bio/salmon/quant"
 
+
+if str2bool(config["paired_end"])==True:        
+        
+    rule salmon_quant_reads:
+        input:
+            r1 = "FASTQ/{sample}_.fastq.gz",
+            r2 = "FASTQ/{sample}_.fastq.gz",
+            index = "salmon/transcriptome_index"
+        output:
+            quant = 'salmon/{sample}/quant.sf',
+            lib = 'salmon/{sample}/lib_format_counts.json'
+        log:
+            'logs/salmon/{sample}.log'
+        params:
+            # optional parameters
+            #libtype ="A",
+            #zip_ext = bz2 # req'd for bz2 files ('bz2'); optional for gz files('gz')
+            extra=""
+        threads: 2
+        wrapper:
+            "0.49.0/bio/salmon/quant"
