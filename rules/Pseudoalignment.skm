@@ -49,8 +49,8 @@ if str2bool(config["paired_end"])==True:
         
     rule salmon_quant_reads:
         input:
-            r1 = "FASTQ/{sample}_.fastq.gz",
-            r2 = "FASTQ/{sample}_.fastq.gz",
+            r1 = "FASTQ/{sample}_1.fastq.gz",
+            r2 = "FASTQ/{sample}_2.fastq.gz",
             index = "salmon/transcriptome_index"
         output:
             quant = 'salmon/{sample}/quant.sf',
