@@ -111,7 +111,12 @@ include: "rules/Pseudoalignment.skm"
      
 rule run_salmon:
     input:
-        expand( 'salmon/{sample}/quant.sf', sample=SAMPLES)    
+        expand( 'salmon/{sample}/quant.sf', sample=SAMPLES)
+    
+rule genecount:
+    input:
+        "featureCounts/total_samples.gene_count.txt", 
+        expand( 'salmon/{sample}/quant.sf', sample=SAMPLES)     
     
 include: "rules/01_stringtie.skm"    
 include: "rules/02_bridge.skm"  
