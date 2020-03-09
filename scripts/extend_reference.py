@@ -1,6 +1,7 @@
 import sys
 import csv
-
+from Bio import SeqIO
+from Bio.Seq import Seq
 
 def main(genome, gtf_ref, gtf_asembly):
 	
