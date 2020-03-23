@@ -109,26 +109,7 @@ rule featureCounts:
 
 #####  DEA
 
-
-def get_contrast(wildcards):
-    return config["diffexp"]["contrasts"][wildcards.contrast]
-
-
-rule deseq2:
-    input:
-        "deseq2/all.rds"
-    output:
-        table=report("results/diffexp/{contrast}.diffexp.tsv", "../report/diffexp.rst"),
-        ma_plot=report("results/diffexp/{contrast}.ma-plot.svg", "../report/ma.rst"),
-    params:
-        contrast=get_contrast
-    conda:
-        "../envs/deseq2.yaml"
-    log:
-        "logs/deseq2/{contrast}.diffexp.log"
-    threads: get_deseq2_threads
-    script:
-        "../scripts/deseq2.R"
+include: "rules/diffexp.smk"
 
 
 ######
