@@ -106,7 +106,38 @@ rule featureCounts:
 # that all these snakemake scripts work under python, thus any python syntax can be used.
 # 
 ###############################################    
- 
+
+#####  DEA
+
+
+def get_contrast(wildcards):
+    return config["diffexp"]["contrasts"][wildcards.contrast]
+
+
+rule deseq2:
+    input:
+        "deseq2/all.rds"
+    output:
+        table=report("results/diffexp/{contrast}.diffexp.tsv", "../report/diffexp.rst"),
+        ma_plot=report("results/diffexp/{contrast}.ma-plot.svg", "../report/ma.rst"),
+    params:
+        contrast=get_contrast
+    conda:
+        "../envs/deseq2.yaml"
+    log:
+        "logs/deseq2/{contrast}.diffexp.log"
+    threads: get_deseq2_threads
+    script:
+        "../scripts/deseq2.R"
+
+
+######
+
+
+
+
+
+
 include: "rules/Pseudoalignment.skm"    
      
 rule run_salmon:
@@ -128,7 +159,7 @@ rule get_whippet_quant:    #This is a calling point to run all whippet analysis
         expand("Whippet/Quant/{sample}.psi.gz", sample=SAMPLES)
     
 include: "rules/04_whippet_delta.skm"
-include: "rules/04.1_whippet_delta.skm"    
+include: "rules/04.1_whippet_delta.skm" 
 
     
 
