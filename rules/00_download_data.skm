@@ -61,6 +61,30 @@ if os.path.isfile(config["accession_list"]):
                     #download_file.write("gzip FASTQ/${srr}_2.fastq"+ "\n")
 
 
+if os.path.isfile("./sample_url.tsv"):
+    
+    with open("./sample_url.tsv") as file :
+
+        reader = csv.DictReader(file, delimiter="\t")
+
+        for row in reader:
+
+            DATA.add(row["sample"])
+
+            file_name = "download/" + row["sample"]  + ".download.sh"
+
+
+            if len(glob.glob(file_name))==0: #Check if the file is there, as if this file is overwriten everything will start from scratch
+
+                download_file =  open(file_name, "w")
+
+                download_file.write("#!/bin/bash" + "\n")
+                download_file.write("wget -r " + row["url"] +  " -O FASTQ/" + row["sample"]  + ".fastq.gz" + "\n")
+                download_file.write("gzip -d FASTQ/" + row["sample"]  + ".fastq.gz" + "\n")
+
+
+
+
 if os.path.isfile('download/genome.download.sh')==False:
     
     with open("download/genome.download.sh", "w") as download_file :
