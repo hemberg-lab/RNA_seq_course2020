@@ -1,3 +1,5 @@
+import pandas as pd
+
 configfile : "config.yaml"
  
 configfile: "config.yaml"
