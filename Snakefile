@@ -93,24 +93,41 @@ rule bamstats:
         "envs/core.yaml"
     shell:
         "samtools stats {input} > {output.stats_txt} && plot-bamstats -p {params} {output.stats_txt}"
-    
 
-rule featureCounts:
-    input:
+      
+########
+
+#rule featureCounts:
+#    input:
         #gtf = "gffcompare/extended_ref_annotation.gtf",
+#        gtf = "Gene_annotation/" + config["assembly"] + ".ensGene.gtf",
+#        bam = expand("hisat2/{sample}.sorted.bam", sample=SAMPLES)
+#    output:
+#        "featureCounts/total_samples.gene_count.txt"
+#    threads: 1
+#    conda:
+#        "envs/core.yaml"
+#    log:
+#        "logs/featureCounts.total.log"
+#    shell:
+#        "featureCounts -a {input.gtf} -o {output} {input.bam} 2> {log}"
+
+ 
+ 
+ rule featureCounts:
+    input:
         gtf = "Gene_annotation/" + config["assembly"] + ".ensGene.gtf",
-        bam = expand("hisat2/{sample}.sorted.bam", sample=SAMPLES)
+        bam = "hisat2/{sample}.sorted.bam"
     output:
-        "featureCounts/total_samples.gene_count.txt"
+        "featureCounts/{sample}.gene_count.txt"
     threads: 1
     conda:
         "envs/core.yaml"
     log:
-        "logs/featureCounts.total.log"
+        "logs/featureCounts.{sample}.log"
     shell:
         "featureCounts -a {input.gtf} -o {output} {input.bam} 2> {log}"
-
-        
+ 
 ############# Downstream analysis #############
 #
 # Everything below corresponds to workflows to perform different anlyses to get meaningful 
