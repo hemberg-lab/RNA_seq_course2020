@@ -118,11 +118,11 @@ rule featureCounts:
 # 
 ###############################################    
 
-#####  DEA
+#####  DGA
 
 include: "rules/diffexp.smk"
 
-rule run_DEA:
+rule run_DGA:
    input:
        expand(["results/diffexp/{contrast}.diffexp.tsv",
                "results/diffexp/{contrast}.ma-plot.svg"],
