@@ -11,7 +11,7 @@ rule count_matrix:
     output:
         "counts/all.tsv"
     shell:
-        '''sed '1d' {input} | awk 'OFS="\t" {$2=$3=$4=$5=$6=""; print $0}' | sed 's/hisat2\///g' | sed 's/.sorted.bam//g' | sed 's/Geneid/gene/g' > {output}'''   
+        '''sed '1d' {input} | awk 'OFS="\t" {{$2=$3=$4=$5=$6=""; print $0}}' | sed 's/hisat2\///g' | sed 's/.sorted.bam//g' | sed 's/Geneid/gene/g' > {output}'''   
 
 
 
