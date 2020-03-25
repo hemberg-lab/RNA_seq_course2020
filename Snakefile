@@ -122,6 +122,11 @@ rule featureCounts:
 
 include: "rules/diffexp.smk"
 
+rule run_DEA:
+   input:
+       expand(["results/diffexp/{contrast}.diffexp.tsv",
+               "results/diffexp/{contrast}.ma-plot.svg"],
+              contrast=config["diffexp"]["contrasts"])
 
 ######
 
