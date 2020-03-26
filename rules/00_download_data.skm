@@ -114,8 +114,8 @@ if os.path.isfile('download/transcriptome.download.sh')==False:
     with open("download/transcriptome.download.sh", "w") as download_file :
         
         download_file.write("#!/bin/bash" + "\n")
-        download_file.write("wget http://hgdownload.soe.ucsc.edu/goldenPath/" + config["assembly"] + "/bigZips/genes/" + config["assembly"] + ".ensGene.gtf.gz -O Gene_annotation/" + config["assembly"] + ".gtf.gz"  + "\n")
-        download_file.write("gzip -d Gene_annotation/" + config["assembly"] + ".gtf.gz")
+        download_file.write("wget http://hgdownload.soe.ucsc.edu/goldenPath/" + config["assembly"] + "/bigZips/genes/" + config["assembly"] + ".ensGene.gtf.gz -O Gene_annotation/" + config["assembly"] + ".ensGene.gtf.gz"  + "\n")
+        download_file.write("gzip -d Gene_annotation/" + config["assembly"] + ".ensGene.gtf.gz")
 
         
 rule download_genome:
