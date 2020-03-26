@@ -106,7 +106,7 @@ if os.path.isfile('download/genome.download.sh')==False:
     with open("download/genome.download.sh", "w") as download_file :
         
         download_file.write("#!/bin/bash" + "\n")
-        download_file.write("wget http://hgdownload.soe.ucsc.edu/goldenPath/" + config["assembly"] + "/bigZips/" + config["assembly"] + ".ensGene.fa.gz -O Genome/" + config["assembly"] + ".fa.gz"  + "\n")
+        download_file.write("wget http://hgdownload.soe.ucsc.edu/goldenPath/" + config["assembly"] + "/bigZips/" + config["assembly"] + ".fa.gz -O Genome/" + config["assembly"] + ".fa.gz"  + "\n")
         download_file.write("gzip -d Genome/" + config["assembly"] + ".fa.gz")
 
 if os.path.isfile('download/transcriptome.download.sh')==False:
@@ -114,7 +114,7 @@ if os.path.isfile('download/transcriptome.download.sh')==False:
     with open("download/transcriptome.download.sh", "w") as download_file :
         
         download_file.write("#!/bin/bash" + "\n")
-        download_file.write("wget ftp://hgdownload.soe.ucsc.edu/goldenPath/" + config["assembly"] + "/bigZips/genes/" + config["assembly"] + ".ensGene.gtf.gz -O Gene_annotation/" + config["assembly"] + ".gtf.gz"  + "\n")
+        download_file.write("wget http://hgdownload.soe.ucsc.edu/goldenPath/" + config["assembly"] + "/bigZips/genes/" + config["assembly"] + ".ensGene.gtf.gz -O Gene_annotation/" + config["assembly"] + ".gtf.gz"  + "\n")
         download_file.write("gzip -d Gene_annotation/" + config["assembly"] + ".gtf.gz")
 
         
