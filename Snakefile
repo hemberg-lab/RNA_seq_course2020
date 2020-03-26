@@ -174,14 +174,14 @@ rule genecount:
 #include: "rules/01_stringtie.skm"    
 #include: "rules/02_bridge.skm"  
 #include: "rules/03_whippet_quant.skm"
-#include: "rules/03.1_whippet_quant.skm"
+include: "rules/03.1_whippet_quant.skm"
 
 #rule get_whippet_quant:    #This is a calling point to run all whippet analysis
 #    input:
 #        expand("Whippet/Quant/{sample}.psi.gz", sample=SAMPLES)
     
 #include: "rules/04_whippet_delta.skm"
-#include: "rules/04.1_whippet_delta.skm" 
+include: "rules/04.1_whippet_delta.skm" 
 
     
 
