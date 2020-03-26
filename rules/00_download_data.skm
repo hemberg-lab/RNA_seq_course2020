@@ -85,7 +85,7 @@ if os.path.isfile("./sample_url.tsv"):
         for row in reader:
 
             SAMPLES.add(row["sample"])
-			from_url.add(row["sample"])
+            from_url.add(row["sample"])
 
             file_name = "download/" + row["sample"]  + ".download.sh"
 
