@@ -7,7 +7,7 @@ def get_strandness(units):
 
 rule count_matrix:
     input:
-        extend("featureCounts/{sample}.gene_count.txt", sample=SAMPLES)
+        expand("featureCounts/{sample}.gene_count.txt", sample=SAMPLES)
     output:
         "counts/all.tsv"
     shell:
