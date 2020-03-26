@@ -150,12 +150,12 @@ if str2bool(config["download_transcriptome"])==True:
 
 
 def get_download_output(sample):
-    if sample in from_ncbi:
+	if sample in from_ncbi:
 		if sample in single_end:
 			return "FASTQ/{sample}.fastq.gz" 		
 		elif sample in paired_end:
-        	return ["FASTQ/{sample}_1.fastq.gz", "FASTQ/{sample}_2.fastq.gz"]
-    elif sample in from_url:
+			return ["FASTQ/{sample}_1.fastq.gz", "FASTQ/{sample}_2.fastq.gz"]
+	elif sample in from_url:
 		return "FASTQ/{sample}.fastq.gz" 
 		
 
