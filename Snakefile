@@ -114,7 +114,7 @@ rule bamstats:
 
  
  
- rule featureCounts:
+rule featureCounts:
     input:
         gtf = "Gene_annotation/" + config["assembly"] + ".ensGene.gtf",
         bam = "hisat2/{sample}.sorted.bam"
