@@ -25,8 +25,19 @@ try:
 except FileExistsError:
     pass
 
+paired_end = set([])
+single_end = set([])
+
+for i in units.index:
+	n = len(units.loc[i, ("fq1", "fq2")].dropna())
+	if n == 1:
+		paired_end.add(i[0])	
+	if n == 2:
+		paired_end.add(i[0])
+
 
 SAMPLES = set([])
+from_ncbi = set([])
 
 if os.path.isfile(config["accession_list"]):
 
@@ -37,6 +48,7 @@ if os.path.isfile(config["accession_list"]):
 
             RUN = row[0]
             SAMPLES.add(RUN)
+			from_ncbi  = set([])
             file_name = "download/" + RUN + ".download.sh"
             command = "fastq-dump.2.9.1 --split-files -O FASTQ --gzip "
 
@@ -49,17 +61,20 @@ if os.path.isfile(config["accession_list"]):
                 download_file.write(command + " " + RUN + "\n")
 
                 
-                if str2bool(config["paired_end"])==False:
-                    download_file.write( "numLines=$(fastq-dump.2.9.1 -X 1 -Z --split-spot $srr | wc -l)" + "\n")
-                    download_file.write( "if [ $numLines -eq 8 ]; then cat FASTQ/${srr}_1.fastq FASTQ/${srr}_2.fastq > FASTQ/$srr.fastq && rm FASTQ/${srr}_1.fastq FASTQ/${srr}_2.fastq; fi"  + "\n")
-                    download_file.write( "if [ -f FASTQ/${srr}_1.fastq ]; then mv FASTQ/${srr}_1.fastq FASTQ/${srr}.fastq ; elif [ -f FASTQ/${srr}_2.fastq ]; then mv FASTQ/${srr}_2.fastq FASTQ/${srr}.fastq; fi"  + "\n")
-                    download_file.write("gzip FASTQ/${srr}.fastq"+ "\n")
+                #if str2bool(config["paired_end"])==False:
+				
+                download_file.write( "numLines=$(fastq-dump.2.9.1 -X 1 -Z --split-spot $srr | wc -l)" + "\n")
+                download_file.write( "if [ $numLines -eq 8 ]; then cat FASTQ/${srr}_1.fastq FASTQ/${srr}_2.fastq > FASTQ/$srr.fastq && rm FASTQ/${srr}_1.fastq FASTQ/${srr}_2.fastq; fi"  + "\n")
+                download_file.write( "if [ -f FASTQ/${srr}_1.fastq ]; then mv FASTQ/${srr}_1.fastq FASTQ/${srr}.fastq ; elif [ -f FASTQ/${srr}_2.fastq ]; then mv FASTQ/${srr}_2.fastq FASTQ/${srr}.fastq; fi"  + "\n")
+                download_file.write("gzip FASTQ/${srr}.fastq"+ "\n")
 
                 #elif str2bool(config["paired_end"])==True:
                 
                     #download_file.write("gzip FASTQ/${srr}_1.fastq"+ "\n")
                     #download_file.write("gzip FASTQ/${srr}_2.fastq"+ "\n")
 
+
+from_url = set([])
 
 if os.path.isfile("./sample_url.tsv"):
     
@@ -70,6 +85,7 @@ if os.path.isfile("./sample_url.tsv"):
         for row in reader:
 
             SAMPLES.add(row["sample"])
+			from_url.add(row["sample"])
 
             file_name = "download/" + row["sample"]  + ".download.sh"
 
@@ -131,42 +147,69 @@ if str2bool(config["download_transcriptome"])==True:
 
 
 
+
+
+def get_download_output(sample):
+    if sample in from_ncbi:
+		if sample in single_end:
+			return "FASTQ/{sample}.fastq.gz" 		
+		elif sample in paired_end:
+        	return ["FASTQ/{sample}_1.fastq.gz", "FASTQ/{sample}_2.fastq.gz"]
+	elif sample in from_url:
+		return "FASTQ/{sample}.fastq.gz" 
+		
+
+rule download_sample:
+	input:
+		"download/{sample}.download.sh"
+	output:
+		temp(get_download_output(wildcards.sample))
+	conda:
+		"../envs/download.yaml"        
+	resources:
+		get_data = 1         
+	log:
+		"logs/download.{sample}.log"   
+	shell:
+		"bash {input} 2> {log}" 
+  
+
         
         
 
-if str2bool(config["paired_end"])==False:
+#if str2bool(config["paired_end"])==False:
 
-    rule download_sample:
-        input:
-            "download/{sample}.download.sh"
-        output:
-            "FASTQ/{sample}.fastq.gz"
-        conda:
-            "../envs/download.yaml"        
-        resources:
-            get_data = 1         
-        log:
-            "logs/download.{sample}.log"   
-        shell:
-            "bash {input} 2> {log}"
+#    rule download_sample:
+#        input:
+#            "download/{sample}.download.sh"
+#        output:
+#            "FASTQ/{sample}.fastq.gz"
+#        conda:
+#            "../envs/download.yaml"        
+#        resources:
+#            get_data = 1         
+#        log:
+#            "logs/download.{sample}.log"   
+#        shell:
+#            "bash {input} 2> {log}"
 
 
-elif str2bool(config["paired_end"])==True:
+#elif str2bool(config["paired_end"])==True:
 
-    rule download_sample:
-        input:
-            "download/{sample}.download.sh"
-        output:
-            "FASTQ/{sample}_1.fastq.gz",
-            "FASTQ/{sample}_2.fastq.gz"
-        conda:
-            "../envs/download.yaml"        
-        resources:
-            get_data = 1         
-        log:
-            "logs/download.{sample}.log"   
-        shell:
-            "bash {input} 2> {log}"
+#    rule download_sample:
+#        input:
+#            "download/{sample}.download.sh"
+#        output:
+#            "FASTQ/{sample}_1.fastq.gz",
+#            "FASTQ/{sample}_2.fastq.gz"
+#        conda:
+#            "../envs/download.yaml"        
+#        resources:
+#            get_data = 1         
+#        log:
+#            "logs/download.{sample}.log"   
+#        shell:
+#            "bash {input} 2> {log}"
 
 
 ###### Target decision tree ####
