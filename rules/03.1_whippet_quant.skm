@@ -21,7 +21,14 @@ def circ():
             param = "--circ"
             
     return(param)
-    
+
+
+def sample_to_unit:
+    list(units.loc[(sample, "1" ) , ("fq1", "fq2") ].dropna()) # We are not yet supporting for lanes
+
+#def get_fastq(wildcards):
+#    return units.loc[(wildcards.sample, wildcards.unit), ["fq1", "fq2"]].dropna()
+
 
 if str2bool(config["paired_end"])==False:
 
