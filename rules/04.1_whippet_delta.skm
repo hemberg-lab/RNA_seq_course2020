@@ -26,8 +26,8 @@ rule whippet_delta_ref:
       "Whippet/Delta/ref/{config["diffexp"]["contrasts"][wildcards.comparison_name]}.diff.gz"
    params:
       bin = config["whippet_bin_folder"],
-      a = lambda wildcards : ",".join(expand("Whippet/Quant/ref/{sample}.psi.gz", sample= whippet_delta[wildcards.comparison_name][0].split(","))),
-      b = lambda wildcards : ",".join(expand("Whippet/Quant/ref/{sample}.psi.gz", sample= whippet_delta[wildcards.comparison_name][1].split(","))),
+      a = lambda wildcards : ",".join(expand("Whippet/Quant/ref/{sample}.psi.gz", sample= whippet_delta[wildcards.comparison_name][0])),
+      b = lambda wildcards : ",".join(expand("Whippet/Quant/ref/{sample}.psi.gz", sample= whippet_delta[wildcards.comparison_name][1])),
       o = lambda wildcards : "Whippet/Delta/ref/" + wildcards.comparison_name
    shell:
       "julia {params.bin}/whippet-delta.jl -a {params.a} -b {params.b} -o {params.o}"
