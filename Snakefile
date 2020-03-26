@@ -42,14 +42,6 @@ rule hisat2_Genome_index:  #This is a rule and represent the first step of mappi
         "hisat2-build -p {threads} {input} Genome/Index/" + config["assembly"]  + " 2> {log}"
 
 
-def get_fastq_hisat2(wildcards):
-    if wildcards.sample in from_ncbi:
-		if wildcards.sample in single_end:
-			return "FASTQ/{wildcards.sample}.fastq.gz" 		
-		elif wildcards.sample in paired_end:
-			return ["FASTQ/{wildcards.sample}_1.fastq.gz", "FASTQ/{wildcards.sample}_2.fastq.gz"]
-	elif sample in from_url:
-		return "FASTQ/{wildcards.sample}.fastq.gz" 
 
 
 def sample_to_unit(wildcards):
