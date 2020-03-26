@@ -33,8 +33,6 @@ def sample_to_unit(wildcards):
 rule  whippet_quant_ref:
     input:
         fastq = sample_to_unit,
-        rd1 = "FASTQ/{sample}_1.fastq.gz",
-        rd2 = "FASTQ/{sample}_2.fastq.gz",
         index = "Whippet/Index/ref/whippet.jls"
     params:
         bin = config["whippet_bin_folder"],
