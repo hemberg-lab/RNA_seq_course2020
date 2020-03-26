@@ -155,7 +155,7 @@ def get_download_output(sample):
 			return "FASTQ/{sample}.fastq.gz" 		
 		elif sample in paired_end:
         	return ["FASTQ/{sample}_1.fastq.gz", "FASTQ/{sample}_2.fastq.gz"]
-	elif sample in from_url:
+    elif sample in from_url:
 		return "FASTQ/{sample}.fastq.gz" 
 		
 
