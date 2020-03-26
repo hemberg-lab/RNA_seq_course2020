@@ -192,5 +192,10 @@ include: "rules/03.1_whippet_quant.skm"
 #include: "rules/04_whippet_delta.skm"
 include: "rules/04.1_whippet_delta.skm" 
 
-    
+rule run_all_comparisons:
+	input:
+		expand("Whippet/Delta/ref/{comparison_name}.diff.gz", comparison_name=comparison_names),
+		expand(["results/diffexp/{contrast}.diffexp.tsv",
+		"results/diffexp/{contrast}.ma-plot.svg"],
+		contrast=config["diffexp"]["contrasts"])
 
