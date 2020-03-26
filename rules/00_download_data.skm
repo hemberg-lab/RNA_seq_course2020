@@ -48,7 +48,7 @@ if os.path.isfile(config["accession_list"]):
 
             RUN = row[0]
             SAMPLES.add(RUN)
-			from_ncbi  = set([])
+            from_ncbi  = set([])
             file_name = "download/" + RUN + ".download.sh"
             command = "fastq-dump.2.9.1 --split-files -O FASTQ --gzip "
 
