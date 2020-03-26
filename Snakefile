@@ -82,7 +82,7 @@ elif str2bool(config["paired_end"])==True:
         conda:
             "envs/core.yaml"
         shell:
-            "hisat2 -p {threads} -1 {input.fastq[0]} -2 {nput.fastq[1]} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+            "hisat2 -p {threads} -1 {input.fastq[0]} -2 {input.fastq[1]} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
 
 
 rule samTobam:
