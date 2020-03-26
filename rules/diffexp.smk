@@ -7,13 +7,11 @@ def get_strandness(units):
 
 rule count_matrix:
     input:
-        "featureCounts/total_samples.gene_count.txt"
+        extend("featureCounts/{sample}.gene_count.txt", sample=SAMPLES)
     output:
         "counts/all.tsv"
     shell:
         '''sed '1d' {input} | awk 'OFS="\t" {{$2=$3=$4=$5=$6=""; print $0}}' | sed 's/hisat2\///g' | sed 's/.sorted.bam//g' | sed 's/Geneid/gene/g' > {output}'''   
-
-
 
 def get_deseq2_threads(wildcards=None):
     # https://twitter.com/mikelove/status/918770188568363008
