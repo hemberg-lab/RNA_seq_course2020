@@ -163,7 +163,7 @@ rule download_sample:
 	input:
 		"download/{sample}.download.sh"
 	output:
-		temp(get_download_output())
+		get_download_output
 	conda:
 		"../envs/download.yaml"        
 	resources:
