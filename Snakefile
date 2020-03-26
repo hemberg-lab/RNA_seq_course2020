@@ -42,38 +42,70 @@ rule hisat2_Genome_index:  #This is a rule and represent the first step of mappi
         "hisat2-build -p {threads} {input} Genome/Index/" + config["assembly"]  + " 2> {log}"
 
 
-if str2bool(config["paired_end"])==False:
+def get_fastq_hisat2(wildcards):
+    if wildcards.sample in from_ncbi:
+		if wildcards.sample in single_end:
+			return "FASTQ/{wildcards.sample}.fastq.gz" 		
+		elif wildcards.sample in paired_end:
+			return ["FASTQ/{wildcards.sample}_1.fastq.gz", "FASTQ/{wildcards.sample}_2.fastq.gz"]
+	elif sample in from_url:
+		return "FASTQ/{wildcards.sample}.fastq.gz" 
+
+
+def sample_to_unit(wildcards):
+    return units.loc[(wildcards.sample, "1" ) , ("fq1", "fq2") ].dropna() # We are not yet supporting for lanes	
+
+#def get_fastq(wildcards):
+#    return units.loc[(wildcards.sample, wildcards.unit), ["fq1", "fq2"]].dropna()
+
+
+rule hisat2_to_Genome:
+	input:
+		sample_to_unit,
+		genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
+	output:
+		temp("hisat2/{sample}.sam")
+	threads: 6
+	log:
+		"logs/hisat2_{sample}.log"    
+	conda:
+		"envs/core.yaml"
+	shell:
+		"hisat2 -p {threads} -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "	
+
+	
+#if str2bool(config["paired_end"])==False:
         
-    rule hisat2_to_Genome:
-        input:
-            fastq = "FASTQ/{sample}.fastq.gz",
-            genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
-        output:
-            temp("hisat2/{sample}.sam")
-        threads: 6
-        log:
-            "logs/hisat2_{sample}.log"       
-        conda:
-            "envs/core.yaml"
-        shell:
-            "hisat2 -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+#    rule hisat2_to_Genome:
+#        input:
+#            fastq = "FASTQ/{sample}.fastq.gz",
+#            genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
+#        output:
+#            temp("hisat2/{sample}.sam")
+#        threads: 6
+#        log:
+#            "logs/hisat2_{sample}.log"       
+#        conda:
+#            "envs/core.yaml"
+#        shell:
+#            "hisat2 -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
             
-elif str2bool(config["paired_end"])==True:
+#elif str2bool(config["paired_end"])==True:
     
-    rule hisat2_to_Genome:
-        input:
-            rd1 = "FASTQ/{sample}_1.fastq.gz",
-            rd2 = "FASTQ/{sample}_2.fastq.gz",
-            genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
-        output:
-            temp("hisat2/{sample}.sam")
-        threads: 6
-        log:
-            "logs/hisat2_{sample}.log"    
-        conda:
-            "envs/core.yaml"
-        shell:
-            "hisat2 -p {threads} -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+ #   rule hisat2_to_Genome:
+ #       input:
+ #           rd1 = "FASTQ/{sample}_1.fastq.gz",
+ #           rd2 = "FASTQ/{sample}_2.fastq.gz",
+ #           genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
+ #       output:
+ #           temp("hisat2/{sample}.sam")
+ #       threads: 6
+ #       log:
+ #           "logs/hisat2_{sample}.log"    
+ #       conda:
+ #           "envs/core.yaml"
+ #       shell:
+ #           "hisat2 -p {threads} -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
 
 
 rule samTobam:
