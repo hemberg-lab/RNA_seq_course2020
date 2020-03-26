@@ -24,48 +24,27 @@ def circ():
 
 
 def sample_to_unit:
-    list(units.loc[(sample, "1" ) , ("fq1", "fq2") ].dropna()) # We are not yet supporting for lanes
+    return units.loc[(sample, "1" ) , ("fq1", "fq2") ].dropna() # We are not yet supporting for lanes
 
 #def get_fastq(wildcards):
 #    return units.loc[(wildcards.sample, wildcards.unit), ["fq1", "fq2"]].dropna()
 
 
-if str2bool(config["paired_end"])==False:
-
-    rule  whippet_quant_ref:
-        input:
-            fastq = "FASTQ/{sample}.fastq.gz",
-            index = "Whippet/Index/ref/whippet.jls"
-        params:
-            bin = config["whippet_bin_folder"],
-            output = "Whippet/Quant/ref/{sample}",
-            other_flags = circ()
-        output:
-            "Whippet/Quant/ref/{sample}.gene.tpm.gz",
-            "Whippet/Quant/ref/{sample}.isoform.tpm.gz",
-            "Whippet/Quant/ref/{sample}.jnc.gz",
-            "Whippet/Quant/ref/{sample}.map.gz",
-            "Whippet/Quant/ref/{sample}.psi.gz"
-        shell:
-            "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags}"
-
-
-elif str2bool(config["paired_end"])==True:
-
-    rule  whippet_quant_ref:
-        input:
-            rd1 = "FASTQ/{sample}_1.fastq.gz",
-            rd2 = "FASTQ/{sample}_2.fastq.gz",
-            index = "Whippet/Index/ref/whippet.jls"
-        params:
-            bin = config["whippet_bin_folder"],
-            output = "Whippet/Quant/ref/{sample}",
-            other_flags = circ()
-        output:
-            "Whippet/Quant/ref/{sample}.gene.tpm.gz",
-            "Whippet/Quant/ref/{sample}.isoform.tpm.gz",
-            "Whippet/Quant/ref/{sample}.jnc.gz",
-            "Whippet/Quant/ref/{sample}.map.gz",
-            "Whippet/Quant/ref/{sample}.psi.gz"
-        shell:
-            "julia {params.bin}/whippet-quant.jl {input.rd1} {input.rd2} -x {input.index} -o {params.output} {params.other_flags}"
+rule  whippet_quant_ref:
+    input:
+        fastq = sample_to_unit(wildcards.sample)
+        rd1 = "FASTQ/{sample}_1.fastq.gz",
+        rd2 = "FASTQ/{sample}_2.fastq.gz",
+        index = "Whippet/Index/ref/whippet.jls"
+    params:
+        bin = config["whippet_bin_folder"],
+        output = "Whippet/Quant/ref/{sample}",
+        other_flags = circ()
+    output:
+        "Whippet/Quant/ref/{sample}.gene.tpm.gz",
+        "Whippet/Quant/ref/{sample}.isoform.tpm.gz",
+        "Whippet/Quant/ref/{sample}.jnc.gz",
+        "Whippet/Quant/ref/{sample}.map.gz",
+        "Whippet/Quant/ref/{sample}.psi.gz"
+    shell:
+        "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags}"
