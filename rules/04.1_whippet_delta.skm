@@ -10,6 +10,7 @@ if "whippet_delta" in config:
 def condition_to_sample(cond):
 	list(conditions.loc[cond, "sample"])
 
+
    
 comparison_names = config["diffexp"]["contrasts"].keys()
 
@@ -20,8 +21,8 @@ rule differential_inclusion_ref:
                        
 rule whippet_delta_ref:
    input:
-      lambda wildcards : expand("Whippet/Quant/ref/{sample}.psi.gz", sample= condition_to_sample(config["diffexp"]["contrasts"][wildcards.comparison_name][0]),
-      lambda wildcards : expand("Whippet/Quant/ref/{sample}.psi.gz", sample= condition_to_sample(config["diffexp"]["contrasts"][wildcards.comparison_name][1])
+      lambda wildcards : expand("Whippet/Quant/ref/{sample}.psi.gz", sample= conditions.loc[config["diffexp"]["contrasts"][wildcards.comparison_name][0], "sample"]),
+      lambda wildcards : expand("Whippet/Quant/ref/{sample}.psi.gz", sample= conditions.loc[config["diffexp"]["contrasts"][wildcards.comparison_name][1], "sample"])
    output:
       "Whippet/Delta/ref/{config["diffexp"]["contrasts"][wildcards.comparison_name]}.diff.gz"
    params:
