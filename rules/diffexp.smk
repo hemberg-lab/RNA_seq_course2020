@@ -54,8 +54,6 @@ rule deseq2_init:
 def get_contrast(wildcards):
     return config["diffexp"]["contrasts"][wildcards.contrast]
 
-print(config["diffexp"]["contrasts"])
-print(config["diffexp"]["contrasts"][wildcards.contrast])
 
 rule deseq2:
     input:
