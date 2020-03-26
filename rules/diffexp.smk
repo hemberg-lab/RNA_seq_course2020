@@ -10,8 +10,8 @@ comparison_names = config["diffexp"]["contrasts"].keys()
 comparison_samples = []
 
 for name in comparison_names:
-    comparison_samples += conditions.loc[config["diffexp"]["contrasts"][wildcards.comparison_name][0], "sample"]
-    comparison_samples += conditions.loc[config["diffexp"]["contrasts"][wildcards.comparison_name][1], "sample"]
+    comparison_samples += conditions.loc[config["diffexp"]["contrasts"][name][0], "sample"]
+    comparison_samples += conditions.loc[config["diffexp"]["contrasts"][name][1], "sample"]
     
 
     
