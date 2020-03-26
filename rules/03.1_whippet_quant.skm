@@ -23,8 +23,8 @@ def circ():
     return(param)
 
 
-def sample_to_unit(sample):
-    return units.loc[(sample, "1" ) , ("fq1", "fq2") ].dropna() # We are not yet supporting for lanes
+def sample_to_unit(wildcards):
+    return units.loc[(wildcards.sample, "1" ) , ("fq1", "fq2") ].dropna() # We are not yet supporting for lanes
 
 #def get_fastq(wildcards):
 #    return units.loc[(wildcards.sample, wildcards.unit), ["fq1", "fq2"]].dropna()
@@ -32,7 +32,7 @@ def sample_to_unit(sample):
 
 rule  whippet_quant_ref:
     input:
-        fastq = sample_to_unit(wildcards.sample),
+        fastq = sample_to_unit,
         rd1 = "FASTQ/{sample}_1.fastq.gz",
         rd2 = "FASTQ/{sample}_2.fastq.gz",
         index = "Whippet/Index/ref/whippet.jls"
