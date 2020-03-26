@@ -72,8 +72,7 @@ elif str2bool(config["paired_end"])==True:
     
     rule hisat2_to_Genome:
         input:
-            rd1 = sample_to_unit[0],
-            rd2 = sample_to_unit[1],
+            fastq = sample_to_unit,
             genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
         output:
             temp("hisat2/{sample}.sam")
@@ -83,7 +82,7 @@ elif str2bool(config["paired_end"])==True:
         conda:
             "envs/core.yaml"
         shell:
-            "hisat2 -p {threads} -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+            "hisat2 -p {threads} -1 {input.fastq[0]} -2 {nput.fastq[1]} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
 
 
 rule samTobam:
