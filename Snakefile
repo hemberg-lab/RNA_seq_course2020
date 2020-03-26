@@ -59,53 +59,39 @@ def sample_to_unit(wildcards):
 #    return units.loc[(wildcards.sample, wildcards.unit), ["fq1", "fq2"]].dropna()
 
 
-rule hisat2_to_Genome:
-	input:
-		sample_to_unit,
-		genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
-	output:
-		temp("hisat2/{sample}.sam")
-	threads: 6
-	log:
-		"logs/hisat2_{sample}.log"    
-	conda:
-		"envs/core.yaml"
-	shell:
-		"hisat2 -p {threads} -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "	
-
 	
-#if str2bool(config["paired_end"])==False:
+if str2bool(config["paired_end"])==False:
         
-#    rule hisat2_to_Genome:
-#        input:
-#            fastq = "FASTQ/{sample}.fastq.gz",
-#            genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
-#        output:
-#            temp("hisat2/{sample}.sam")
-#        threads: 6
-#        log:
-#            "logs/hisat2_{sample}.log"       
-#        conda:
-#            "envs/core.yaml"
-#        shell:
-#            "hisat2 -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+    rule hisat2_to_Genome:
+        input:
+            fastq = sample_to_unit,
+            genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
+        output:
+            temp("hisat2/{sample}.sam")
+        threads: 6
+        log:
+            "logs/hisat2_{sample}.log"       
+        conda:
+            "envs/core.yaml"
+        shell:
+            "hisat2 -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
             
-#elif str2bool(config["paired_end"])==True:
+elif str2bool(config["paired_end"])==True:
     
- #   rule hisat2_to_Genome:
- #       input:
- #           rd1 = "FASTQ/{sample}_1.fastq.gz",
- #           rd2 = "FASTQ/{sample}_2.fastq.gz",
- #           genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
- #       output:
- #           temp("hisat2/{sample}.sam")
- #       threads: 6
- #       log:
- #           "logs/hisat2_{sample}.log"    
- #       conda:
- #           "envs/core.yaml"
- #       shell:
- #           "hisat2 -p {threads} -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+    rule hisat2_to_Genome:
+        input:
+            rd1 = sample_to_unit[0],
+            rd2 = sample_to_unit[1],
+            genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
+        output:
+            temp("hisat2/{sample}.sam")
+        threads: 6
+        log:
+            "logs/hisat2_{sample}.log"    
+        conda:
+            "envs/core.yaml"
+        shell:
+            "hisat2 -p {threads} -1 {input.rd1} -2 {input.rd2} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
 
 
 rule samTobam:
