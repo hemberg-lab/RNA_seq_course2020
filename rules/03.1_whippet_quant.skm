@@ -23,7 +23,7 @@ def circ():
     return(param)
 
 
-def sample_to_unit:
+def sample_to_unit(sample):
     return units.loc[(sample, "1" ) , ("fq1", "fq2") ].dropna() # We are not yet supporting for lanes
 
 #def get_fastq(wildcards):
