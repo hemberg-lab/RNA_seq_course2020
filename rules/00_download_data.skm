@@ -163,7 +163,7 @@ rule download_sample:
 	input:
 		"download/{sample}.download.sh"
 	output:
-		"FASTQ/{sample}.fastq.gz"
+		temp("FASTQ/{sample}.fastq.gz")
 	conda:
 		"../envs/download.yaml"        
 	resources:
@@ -178,8 +178,8 @@ rule download_sample_ncbi_paired:
 	input:
 		"download/{sample}.download.sh"
 	output:
-		"FASTQ/{sample}_1.fastq.gz", 
-		"FASTQ/{sample}_2.fastq.gz"
+		temp("FASTQ/{sample}_1.fastq.gz"), 
+		temp("FASTQ/{sample}_2.fastq.gz")
 	conda:
 		"../envs/download.yaml"        
 	resources:
