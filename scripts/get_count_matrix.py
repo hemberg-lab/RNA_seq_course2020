@@ -11,6 +11,8 @@ def main(count_list):
 		with open(file) as F:
 			reader = csv.DictReader(filter(lambda row: row[0]!='#', F), delimiter="\t")
 			
+			#samples = []
+
 			for row in reader:
 				
 				samples = []
@@ -19,10 +21,10 @@ def main(count_list):
 					if 'hisat2' in key:
 						samples.append( key )
 						
-			sample_counts = [(x.split("/")[1].split(".")[0], row[x]) for x in samples]
+				sample_counts = [(x.split("/")[1].split(".")[0], row[x]) for x in samples]
 			
-			for i in sample_counts:
-				 gene_count[row["Geneid"]].append(i)
+				for i in sample_counts:
+					gene_count[row["Geneid"]].append(i)
 			
 			
 	sample_IDs = [x[0] for x in gene_count[list(gene_count.keys())[0]]]
