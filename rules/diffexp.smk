@@ -17,7 +17,7 @@ for name in comparison_names:
     
 rule count_matrix:
     input:
-        expand("featureCounts/{sample}.gene_count.txt", sample=comparison_samples)
+        set(expand("featureCounts/{sample}.gene_count.txt", sample=comparison_samples))
     output:
         "counts/all.tsv"
     shell:
