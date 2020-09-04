@@ -78,5 +78,6 @@ rule deseq2:
     log:
         "logs/deseq2/{contrast}.diffexp.log"
 #    threads: get_deseq2_threads
+    threads: 1
     script:
         "../scripts/deseq2.R"
