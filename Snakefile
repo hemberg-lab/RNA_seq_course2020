@@ -45,7 +45,6 @@ rule hisat2_Genome_index:  #This is a rule and represent the first step of mappi
 
 
 def sample_to_unit(wildcards):
-    print( (wildcards.sample, "1" ) , ("fq1", "fq2") )
     return units.loc[(wildcards.sample, "1" ) , ("fq1", "fq2") ].dropna() # We are not yet supporting for lanes	
 
 #def get_fastq(wildcards):
