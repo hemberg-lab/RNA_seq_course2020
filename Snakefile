@@ -75,7 +75,7 @@ elif str2bool(config["paired_end"])==True:
             fastq = sample_to_unit,
             genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
         output:
-            "hisat2/{sample}.sam"
+            temp("hisat2/{sample}.sam")
         threads: 6
         log:
             "logs/hisat2_{sample}.log"    
