@@ -91,13 +91,13 @@ if str2bool(config.get("group_by_cluster", False)):
 			pool_name = cluster + "-" + str(n)
 			pool_names.add(pool_name)
 			
-			cluster_pools[pool_name] = p
+			cluster_pools[(cluster, str(n))] = p
 			n+=1
 			
 	rule get_sample_clusters:
 		
 		input:
-			fastq = lambda w: files_by_cluster[(w.cluster, w.pool)]
+			fastq = lambda w: cluster_pools[(w.cluster, w.pool)]
 		output:
 			temp("Sample_pools/{cluster}-{pool}.fastq.gz")
 		shell:
