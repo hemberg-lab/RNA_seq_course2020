@@ -1,4 +1,6 @@
 import pandas as pd
+import random
+from collections import defaultdict
 
 configfile : "config.yaml"
  
@@ -15,6 +17,12 @@ units.index = units.index.set_levels([i.astype(str) for i in units.index.levels]
 #validate(units, schema="schemas/units.schema.yaml") 
  
 
+sed = config.get("snakepool_seed", 123)
+random.seed(int(sed)) 	
+	
+def partition (list_in, n):  # Function to do random pooling
+    random.shuffle(list_in)
+    return [list_in[i::n] for i in range(n)]	
 
  
 include: "rules/00_download_data.skm"
@@ -51,38 +59,54 @@ def sample_to_unit(wildcards):
 #    return units.loc[(wildcards.sample, wildcards.unit), ["fq1", "fq2"]].dropna()
 
 
+
+if str2bool(config.get("group_by_cluster", False)):
 	
-if str2bool(config["paired_end"])==False:
-        
-    rule hisat2_to_Genome:
-        input:
-            fastq = sample_to_unit,
-            genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
-        output:
-            temp("hisat2/{sample}.sam")
-        threads: 6
-        log:
-            "logs/hisat2_{sample}.log"       
-        conda:
-            "envs/core.yaml"
-        shell:
-            "hisat2 -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
-            
-elif str2bool(config["paired_end"])==True:
-    
-    rule hisat2_to_Genome:
-        input:
-            fastq = sample_to_unit,
-            genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
-        output:
-            temp("hisat2/{sample}.sam")
-        threads: 6
-        log:
-            "logs/hisat2_{sample}.log"    
-        conda:
-            "envs/core.yaml"
-        shell:
-            "hisat2 -p {threads} -1 {input.fastq[0]} -2 {input.fastq[1]} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+	files_by_cluster = defaultdict(list)
+	
+	with open(config["sample_clusters"]) as file:
+
+	    file_paths = csv.DictReader(file, delimiter="\t")
+
+	    for row in file_paths:
+
+		cluster_files_metadata[row[config["cluster_name"]].replace(" ", "_")].append(row[config["path"]])
+		
+		
+
+else:
+	
+	if str2bool(config["paired_end"])==False:
+
+	    rule hisat2_to_Genome:
+		input:
+		    fastq = sample_to_unit,
+		    genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
+		output:
+		    temp("hisat2/{sample}.sam")
+		threads: 6
+		log:
+		    "logs/hisat2_{sample}.log"       
+		conda:
+		    "envs/core.yaml"
+		shell:
+		    "hisat2 -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+
+	elif str2bool(config["paired_end"])==True:
+
+	    rule hisat2_to_Genome:
+		input:
+		    fastq = sample_to_unit,
+		    genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
+		output:
+		    temp("hisat2/{sample}.sam")
+		threads: 6
+		log:
+		    "logs/hisat2_{sample}.log"    
+		conda:
+		    "envs/core.yaml"
+		shell:
+		    "hisat2 -p {threads} -1 {input.fastq[0]} -2 {input.fastq[1]} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
 
 
 rule samTobam:
@@ -163,9 +187,6 @@ rule run_DGA:
               contrast=config["diffexp"]["contrasts"])
 
 ######
-
-
-
 
 
 
