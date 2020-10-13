@@ -15,15 +15,29 @@ rule StringTie_Assemble:
     "stringtie {params.str} {input.bam} -G {input.ref_gtf} -o {output}"
     
 
-rule StringTie_Merge:
-  input:
-    bams = expand("StringTie/{sample}.assemble.gtf", sample=SAMPLES)
-  output:
-    merged_gtf = "StringTie/merged.assemble.gtf"
-  conda:
-    "../envs/stringtie.yaml"
-  shell:
-    "stringtie --merge {input} -o {output}"
+if str2bool(config.get("group_by_cluster", False)):
+    
+    rule StringTie_Merge:
+      input:
+        bams = expand("StringTie/{sample}.assemble.gtf", sample=files_by_cluster.keys())
+      output:
+        merged_gtf = "StringTie/merged.assemble.gtf"
+      conda:
+        "../envs/stringtie.yaml"
+      shell:
+        "stringtie --merge {input} -o {output}"
+
+else:
+
+    rule StringTie_Merge:
+      input:
+        bams = expand("StringTie/{sample}.assemble.gtf", sample=SAMPLES)
+      output:
+        merged_gtf = "StringTie/merged.assemble.gtf"
+      conda:
+        "../envs/stringtie.yaml"
+      shell:
+        "stringtie --merge {input} -o {output}"
   
   
 rule StringTie_gffcompare:
