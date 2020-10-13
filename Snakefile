@@ -62,6 +62,8 @@ def sample_to_unit(wildcards):
 
 if str2bool(config.get("group_by_cluster", False)):
 	
+	partitons = defaultdict(list)
+	
 	files_by_cluster = defaultdict(list)
 	
 	with open(config["sample_clusters"]) as file:
@@ -70,10 +72,38 @@ if str2bool(config.get("group_by_cluster", False)):
 
 	    for row in file_paths:
 
-		cluster_files_metadata[row[config["cluster_name"]].replace(" ", "_")].append(row[config["path"]])
+			cluster_files_metadata[row[config["cluster_name"]].replace(" ", "_")].append(row[config["path"]])
 		
+	rule get_sample_clusters:
+		
+		input:
+			fastq = lambda w: files_by_cluster[(w.cluster, w.)]
+		output:
+			temp("Sample_pools/{cluster}_{pool}.fastq.gz")
 		
 
+	if str2bool(config["paired_end"])==False:
+
+		rule hisat2_to_Genome:
+			input:
+				fastq = "Sample_pools/{sample}.fastq.gz",
+				genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
+			output:
+				temp("hisat2/{sample}.sam")
+			threads: 6
+			log:
+				"logs/hisat2_{sample}.log"       
+			conda:
+				"envs/core.yaml"
+			shell:
+				"hisat2 -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+
+	elif str2bool(config["paired_end"])==True:
+		
+		
+	    print("Pooling samples of paired end data is not yet supported")
+		
+		
 else:
 	
 	if str2bool(config["paired_end"])==False:
@@ -93,7 +123,8 @@ else:
 		    "hisat2 -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
 
 	elif str2bool(config["paired_end"])==True:
-
+		
+		
 	    rule hisat2_to_Genome:
 		input:
 		    fastq = sample_to_unit,
