@@ -24,8 +24,8 @@ def partition (list_in, n):  # Function to do random pooling
     random.shuffle(list_in)
     return [list_in[i::n] for i in range(n)]	
 
- 
-include: "rules/00_download_data.skm"
+# This 
+include: "rules/00_download_data.skm"  
 
 #################################### Mapping and Quantification ################################
 #
@@ -62,37 +62,58 @@ def sample_to_unit(wildcards):
 
 if str2bool(config.get("group_by_cluster", False)):
 	
-	partitons = defaultdict(list)
-	
 	files_by_cluster = defaultdict(list)
+	cluster_pools = defaultdict(list)
+	pool_names = set([])
 	
-	with open(config["sample_clusters"]) as file:
+	with open(config["units"]) as file:
 
-	    file_paths = csv.DictReader(file, delimiter="\t")
+	    unit_file = csv.DictReader(file, delimiter="\t")
 
-	    for row in file_paths:
+	    for row in unit_file:
 
-			cluster_files_metadata[row[config["cluster_name"]].replace(" ", "_")].append(row[config["path"]])
+			files_by_cluster[row[config["cluster_name"]].replace(" ", "_")].append(row["fq1"])
+	
+	with open(config["samples"]) as file:
+
+	    sample_file = csv.DictReader(file, delimiter="\t")
+	    for row in sample_file:
+			try:
+				cluster_partitions[row[config["condition"]].replace(" ", "_")].append(int(row["pools"]))
+			except KeyError:
+				print("Error: pools column is not defined at sample.tsv")
+				
+	for cluster in files_by_cluster.keys():
 		
+		n=1
+		for p in partitons(cluster_files_metadata[cluster], cluster_partitions[cluster]):
+			
+			pool_name = cluster + "-" + str(n)
+			pool_names.add(pool_name)
+			
+			cluster_pools[pool_name] = p
+			n+=1
+			
 	rule get_sample_clusters:
 		
 		input:
-			fastq = lambda w: files_by_cluster[(w.cluster, w.)]
+			fastq = lambda w: files_by_cluster[(w.cluster, w.pool)]
 		output:
-			temp("Sample_pools/{cluster}_{pool}.fastq.gz")
-		
+			temp("Sample_pools/{cluster}-{pool}.fastq.gz")
+		shell:
+			"cat {input} > {output}"
 
 	if str2bool(config["paired_end"])==False:
 
 		rule hisat2_to_Genome:
 			input:
-				fastq = "Sample_pools/{sample}.fastq.gz",
+				fastq = "Sample_pools/{cluster}-{pool}.fastq.gz",
 				genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
 			output:
-				temp("hisat2/{sample}.sam")
+				temp("hisat2/{cluster}-{pool}.sam")
 			threads: 6
 			log:
-				"logs/hisat2_{sample}.log"       
+				"logs/hisat2_{cluster}-{pool}.log"       
 			conda:
 				"envs/core.yaml"
 			shell:
