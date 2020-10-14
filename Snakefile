@@ -19,7 +19,15 @@ units.index = units.index.set_levels([i.astype(str) for i in units.index.levels]
 
 sed = config.get("snakepool_seed", 123)
 random.seed(int(sed)) 	
-	
+
+def str2bool(v):
+  if v==True:
+    return True
+  elif v==False:
+    return False
+  else:
+    return v.lower() in ("yes", "true", "t", "1")
+
 def partition (list_in, n):  # Function to do random pooling
     random.shuffle(list_in)
     return [list_in[i::n] for i in range(n)]	
