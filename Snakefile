@@ -47,7 +47,7 @@ def partition (list_in, n):  # Function to do random pooling
     
 rule hisat2_Genome_index:  #This is a rule and represent the first step of mapping the reads with hisat (indexing the genome)
     input:
-	config["Genome"]
+        config["Genome"]
         #"Genome/" + config["assembly"] + ".fa"
     output:
         "Genome/Index/" + config["assembly"] + ".1.ht2"
