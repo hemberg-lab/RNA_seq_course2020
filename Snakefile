@@ -71,26 +71,24 @@ def sample_to_unit(wildcards):
 
 if str2bool(config.get("group_by_cluster", False)):
 	
-	files_by_cluster = defaultdict(list)
+	samples_by_cluster = defaultdict(list)
+	cluster_partitions = dict()
 	cluster_pools = defaultdict(list)
 	pool_names = set([])
 	
-	with open(config["units"]) as file:
-
-		unit_file = csv.DictReader(file, delimiter="\t")
-
-		for row in unit_file:
-
-			files_by_cluster[row[config["cluster_name"]].replace(" ", "_")].append(row["fq1"])
 	
 	with open(config["samples"]) as file:
 
 		sample_file = csv.DictReader(file, delimiter="\t")
+
 		for row in sample_file:
+
+			samples_by_cluster[row["condition"].replace(" ", "_")].append(row["sample"])
 			try:
-				cluster_partitions[row[config["condition"]].replace(" ", "_")].append(int(row["pools"]))
+				cluster_partitions[row["condition"].replace(" ", "_")] = int(row["pools"])
 			except KeyError:
-				print("Error: pools column is not defined at sample.tsv")
+				print("Error: pools column is not defined at sample.tsv")	
+				
 				
 	for cluster in files_by_cluster.keys():
 		
@@ -99,8 +97,8 @@ if str2bool(config.get("group_by_cluster", False)):
 			
 			pool_name = cluster + "-" + str(n)
 			pool_names.add(pool_name)
-			
-			cluster_pools[(cluster, str(n))] = p
+			files = [ sample_to_unit(x) for x in p]
+			cluster_pools[(cluster, str(n))] = files
 			n+=1
 			
 	rule get_sample_clusters:
