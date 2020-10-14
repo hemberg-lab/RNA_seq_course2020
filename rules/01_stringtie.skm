@@ -19,7 +19,7 @@ if str2bool(config.get("group_by_cluster", False)):
     
     rule StringTie_Merge:
       input:
-        bams = expand("StringTie/{sample}.assemble.gtf", sample=files_by_cluster.keys())
+        bams = expand("StringTie/{sample}.assemble.gtf", sample=samples_by_cluster.keys())
       output:
         merged_gtf = "StringTie/merged.assemble.gtf"
       conda:
