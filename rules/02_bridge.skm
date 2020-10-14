@@ -14,7 +14,8 @@ rule StringTie_filer:
         
 rule extrend_refrence:
     input:
-        genome = "Genome/" + config["assembly"] + ".fa",
+        genome = config["Genome"],
+        #genome = "Genome/" + config["assembly"] + ".fa",
         ref_gtf = config["GTF"],
         #ref_gtf = "Gene_annotation/" + config["assembly"] + ".gtf",
         gtf_filtered = "gffcompare/gffcompare.annotated.filtered.gtf"
