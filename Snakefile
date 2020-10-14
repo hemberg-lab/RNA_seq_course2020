@@ -93,7 +93,7 @@ if str2bool(config.get("group_by_cluster", False)):
 	for cluster in samples_by_cluster.keys():
 		
 		n=1
-		for p in partitons(cluster_files_metadata[cluster], cluster_partitions[cluster]):
+		for p in partition(cluster_files_metadata[cluster], cluster_partitions[cluster]):
 			
 			pool_name = cluster + "-" + str(n)
 			pool_names.add(pool_name)
