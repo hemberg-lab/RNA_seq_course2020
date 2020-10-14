@@ -95,7 +95,6 @@ if str2bool(config.get("group_by_cluster", False)):
 			n+=1
 			
 	rule get_sample_clusters:
-		
 		input:
 			fastq = lambda w: cluster_pools[(w.cluster, w.pool)]
 		output:
@@ -130,35 +129,35 @@ else:
 	if str2bool(config["paired_end"])==False:
 
 	    rule hisat2_to_Genome:
-		input:
-		    fastq = sample_to_unit,
-		    genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
-		output:
-		    temp("hisat2/{sample}.sam")
-		threads: 6
-		log:
-		    "logs/hisat2_{sample}.log"       
-		conda:
-		    "envs/core.yaml"
-		shell:
-		    "hisat2 -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+			input:
+				fastq = sample_to_unit,
+				genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
+			output:
+				temp("hisat2/{sample}.sam")
+			threads: 6
+			log:
+				"logs/hisat2_{sample}.log"       
+			conda:
+				"envs/core.yaml"
+			shell:
+				"hisat2 -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
 
 	elif str2bool(config["paired_end"])==True:
 		
 		
-	    rule hisat2_to_Genome:
-		input:
-		    fastq = sample_to_unit,
-		    genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
-		output:
-		    temp("hisat2/{sample}.sam")
-		threads: 6
-		log:
-		    "logs/hisat2_{sample}.log"    
-		conda:
-		    "envs/core.yaml"
-		shell:
-		    "hisat2 -p {threads} -1 {input.fastq[0]} -2 {input.fastq[1]} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+		rule hisat2_to_Genome:
+			input:
+				fastq = sample_to_unit,
+				genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
+			output:
+				temp("hisat2/{sample}.sam")
+			threads: 6
+			log:
+				"logs/hisat2_{sample}.log"    
+			conda:
+				"envs/core.yaml"
+			shell:
+				"hisat2 -p {threads} -1 {input.fastq[0]} -2 {input.fastq[1]} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
 
 
 rule samTobam:
