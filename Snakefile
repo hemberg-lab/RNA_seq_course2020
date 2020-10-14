@@ -25,7 +25,7 @@ def partition (list_in, n):  # Function to do random pooling
     return [list_in[i::n] for i in range(n)]	
 
 # This 
-include: "rules/00_download_data.skm"  
+#include: "rules/00_download_data.skm"  
 
 #################################### Mapping and Quantification ################################
 #
