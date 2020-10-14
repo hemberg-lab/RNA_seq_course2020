@@ -75,7 +75,15 @@ if str2bool(config.get("group_by_cluster", False)):
 	cluster_partitions = dict()
 	cluster_pools = defaultdict(list)
 	pool_names = set([])
+	sample_files = dict()
 	
+	with open(config["units"]) as file:
+
+		unit_file = csv.DictReader(file, delimiter="\t")
+		
+		for row in unit_file:
+			sample_files[row["sample"]] = row["fq1"]
+		
 	
 	with open(config["samples"]) as file:
 
@@ -97,7 +105,7 @@ if str2bool(config.get("group_by_cluster", False)):
 			
 			pool_name = cluster + "-" + str(n)
 			pool_names.add(pool_name)
-			files = [ sample_to_unit(x) for x in p]
+			files = [ sample_files[x] for x in p]
 			cluster_pools[(cluster, str(n))] = files
 			n+=1
 			
