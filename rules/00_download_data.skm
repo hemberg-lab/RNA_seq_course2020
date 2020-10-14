@@ -2,13 +2,7 @@ import glob, os
 import csv
 from collections import defaultdict
 
-def str2bool(v):
-  if v==True:
-    return True
-  elif v==False:
-    return False
-  else:
-    return v.lower() in ("yes", "true", "t", "1")
+
 
 try:
     os.mkdir("FASTQ")
