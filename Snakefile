@@ -7,7 +7,7 @@ configfile : "config.yaml"
 configfile: "config.yaml"
 #validate(config, schema="schemas/config.schema.yaml")
 
-conditions = pd.read_table("samples.tsv").set_index("condition", drop=False)
+conditions = pd.read_table(config["samples"]).set_index("condition", drop=False)
 
 samples = pd.read_table(config["samples"]).set_index("sample", drop=False)
 #validate(samples, schema="schemas/samples.schema.yaml")
@@ -68,16 +68,16 @@ if str2bool(config.get("group_by_cluster", False)):
 	
 	with open(config["units"]) as file:
 
-	    unit_file = csv.DictReader(file, delimiter="\t")
+		unit_file = csv.DictReader(file, delimiter="\t")
 
-	    for row in unit_file:
+		for row in unit_file:
 
 			files_by_cluster[row[config["cluster_name"]].replace(" ", "_")].append(row["fq1"])
 	
 	with open(config["samples"]) as file:
 
-	    sample_file = csv.DictReader(file, delimiter="\t")
-	    for row in sample_file:
+		sample_file = csv.DictReader(file, delimiter="\t")
+		for row in sample_file:
 			try:
 				cluster_partitions[row[config["condition"]].replace(" ", "_")].append(int(row["pools"]))
 			except KeyError:
