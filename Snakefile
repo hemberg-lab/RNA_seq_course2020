@@ -244,13 +244,13 @@ rule featureCounts:
 
 #####  DGA
 
-include: "rules/diffexp.smk"
+# include: "rules/diffexp.smk"
 
-rule run_DGA:
-   input:
-       expand(["results/diffexp/{contrast}.diffexp.tsv",
-               "results/diffexp/{contrast}.ma-plot.svg"],
-              contrast=config["diffexp"]["contrasts"])
+# rule run_DGA:
+#    input:
+#        expand(["results/diffexp/{contrast}.diffexp.tsv",
+#                "results/diffexp/{contrast}.ma-plot.svg"],
+#               contrast=config["diffexp"]["contrasts"])
 
 ######
 
@@ -267,9 +267,9 @@ rule genecount:
         "featureCounts/total_samples.gene_count.txt", 
         expand( 'salmon/{sample}/quant.sf', sample=SAMPLES)     
     
-#include: "rules/01_stringtie.skm"    
-#include: "rules/02_bridge.skm"  
-#include: "rules/03_whippet_quant.skm"
+include: "rules/01_stringtie.skm"    
+include: "rules/02_bridge.skm"  
+include: "rules/03_whippet_quant.skm"
 include: "rules/03.1_whippet_quant.skm"
 
 #rule get_whippet_quant:    #This is a calling point to run all whippet analysis
