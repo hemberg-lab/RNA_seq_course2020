@@ -128,7 +128,7 @@ else:
 	
 	if str2bool(config["paired_end"])==False:
 
-	    rule hisat2_to_Genome:
+		rule hisat2_to_Genome:
 			input:
 				fastq = sample_to_unit,
 				genome = "Genome/Index/" + config["assembly"] + ".1.ht2"
