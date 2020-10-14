@@ -90,7 +90,7 @@ if str2bool(config.get("group_by_cluster", False)):
 				print("Error: pools column is not defined at sample.tsv")	
 				
 				
-	for cluster in files_by_cluster.keys():
+	for cluster in samples_by_cluster.keys():
 		
 		n=1
 		for p in partitons(cluster_files_metadata[cluster], cluster_partitions[cluster]):
