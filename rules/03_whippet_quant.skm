@@ -65,7 +65,7 @@ elif str2bool(config["paired_end"])==True:
             
 
 rule all_quant:
-    input: expand(Whippet/Quant/{sample}.psi.gz, sample=sample_files.keys())
+    input: expand("Whippet/Quant/{sample}.psi.gz", sample=sample_files.keys())
 
 
 
