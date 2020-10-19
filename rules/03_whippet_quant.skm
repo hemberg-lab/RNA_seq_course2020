@@ -36,11 +36,11 @@ if str2bool(config["paired_end"])==False:
         output:
             "Whippet/Quant/{sample}.gene.tpm.gz",
             "Whippet/Quant/{sample}.isoform.tpm.gz",
-            "Whippet/Quant/{sample}.jnc.gz",
-            "Whippet/Quant/{sample}.map.gz",
+            #"Whippet/Quant/{sample}.jnc.gz",
+            #"Whippet/Quant/{sample}.map.gz",
             "Whippet/Quant/{sample}.psi.gz"
         shell:
-            "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags}"
+            "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags} && Whippet/Quant/{sample}.jnc.gz &&  Whippet/Quant/{sample}.map.gz"
 
 
 elif str2bool(config["paired_end"])==True:
@@ -63,3 +63,9 @@ elif str2bool(config["paired_end"])==True:
         shell:
             "julia {params.bin}/whippet-quant.jl {input.rd1} {input.rd2} -x {input.index} -o {params.output} {params.other_flags}"
             
+
+rule all_quant:
+    input: expand(Whippet/Quant/{sample}.psi.gz, sample=sample_files.keys())
+
+
+
