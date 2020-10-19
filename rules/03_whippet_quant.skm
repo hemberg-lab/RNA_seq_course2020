@@ -28,7 +28,8 @@ if str2bool(config["paired_end"])==False:
 
     rule  whippet_quant:
         input:
-            fastq = "FASTQ/{sample}.fastq.gz",
+            #fastq = "FASTQ/{sample}.fastq.gz",
+            fastq = lambda w : sample_files[w.sample]
             index = "Whippet/Index/whippet.jls"
         params:
             bin = config["whippet_bin_folder"],
