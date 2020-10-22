@@ -69,7 +69,7 @@ def get_files_by_cluster(cluster, ext):
     path="Whippet/Quant/"
     return([path + sample_files[x] + ext for x in samples_by_cluster[cluster]])
 
-print(get_files_by_cluster("Surface_ectoderm_2"), ".gene.tpm.gz")
+print(get_files_by_cluster("Surface_ectoderm_2", ".gene.tpm.gz") )
 
 rule merge_quant_by_cluster:
     input:
