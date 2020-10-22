@@ -65,7 +65,7 @@ elif str2bool(config["paired_end"])==True:
         shell:
             "julia {params.bin}/whippet-quant.jl {input.rd1} {input.rd2} -x {input.index} -o {params.output} {params.other_flags}"
             
-def get_files_by_cluster(cluster, ext)
+def get_files_by_cluster(cluster, ext):
     path="Whippet/Quant/"
     return([path + sample_files[x] + ext for x in samples_by_cluster[cluster]])
 
