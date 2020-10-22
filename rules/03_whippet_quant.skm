@@ -72,10 +72,10 @@ def get_files_by_cluster(cluster, ext):
 rule merge_quant_by_cluster:
     input:
         gene = lambda w : get_files_by_cluster(w.cluster, ".gene.tpm.gz"),
-        isoform = lambda w : get_files_by_cluster(w.cluster,  ".isoform.tpm.gz"),
-        jnc =  lambda w : get_files_by_cluster(w.cluster,  ".jnc.gz"),
-        map =  lambda w : get_files_by_cluster(w.cluster,  ".map.gz"),
-        psi =  lambda w : get_files_by_cluster(w.cluster,  ".psi.gz")
+        isoform = lambda w : get_files_by_cluster(w.cluster, ".isoform.tpm.gz"),
+        jnc =  lambda w : get_files_by_cluster(w.cluster, ".jnc.gz"),
+        map =  lambda w : get_files_by_cluster(w.cluster, ".map.gz"),
+        psi =  lambda w : get_files_by_cluster(w.cluster, ".psi.gz")
     output:
         merged_gene = "Whippet/Quant/Merge/{cluster}.gene.tpm.tsv",
         merged_isoform = "Whippet/Quant/Merge/{cluster}.isoform.tpm.tsv"
@@ -86,7 +86,7 @@ rule merge_quant_by_cluster:
 rule all_quant:
     #input: expand("Whippet/Quant/{sample}.psi.gz", sample=sample_files.keys())
     input: 
-        expand("Whippet/Quant/Merge/{cluster}.gene.tpm.tsv", sample=samples_by_cluster.keys()),
-        expand("Whippet/Quant/Merge/{cluster}.isoform.tpm.tsv", sample=samples_by_cluster.keys())
+        expand("Whippet/Quant/Merge/{cluster}.gene.tpm.tsv", cluster=samples_by_cluster.keys()),
+        expand("Whippet/Quant/Merge/{cluster}.isoform.tpm.tsv", cluster=samples_by_cluster.keys())
     
 
