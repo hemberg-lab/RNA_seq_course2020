@@ -36,11 +36,11 @@ if str2bool(config["paired_end"])==False:
             output = "Whippet/Quant/{sample}",
             other_flags = circ()
         output:
-            "Whippet/Quant/{sample}.gene.tpm.gz",
-            "Whippet/Quant/{sample}.isoform.tpm.gz",
-            "Whippet/Quant/{sample}.jnc.gz",
-            "Whippet/Quant/{sample}.map.gz",
-            "Whippet/Quant/{sample}.psi.gz"
+            temp("Whippet/Quant/{sample}.gene.tpm.gz"),
+            temp("Whippet/Quant/{sample}.isoform.tpm.gz"),
+            temp("Whippet/Quant/{sample}.jnc.gz"),
+            temp("Whippet/Quant/{sample}.map.gz"),
+            temp("Whippet/Quant/{sample}.psi.gz)"
         shell:
             "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags}"
 
@@ -57,11 +57,11 @@ elif str2bool(config["paired_end"])==True:
             output = "Whippet/Quant/{sample}",
             other_flags = circ()
         output:
-            "Whippet/Quant/{sample}.gene.tpm.gz",
-            "Whippet/Quant/{sample}.isoform.tpm.gz",
-            "Whippet/Quant/{sample}.jnc.gz",
-            "Whippet/Quant/{sample}.map.gz",
-            "Whippet/Quant/{sample}.psi.gz"
+            temp("Whippet/Quant/{sample}.gene.tpm.gz"),
+            temp("Whippet/Quant/{sample}.isoform.tpm.gz"),
+            temp("Whippet/Quant/{sample}.jnc.gz"),
+            temp("Whippet/Quant/{sample}.map.gz"),
+            temp("Whippet/Quant/{sample}.psi.gz)"
         shell:
             "julia {params.bin}/whippet-quant.jl {input.rd1} {input.rd2} -x {input.index} -o {params.output} {params.other_flags}"
             
@@ -76,6 +76,17 @@ rule merge_quant_by_cluster:
         jnc =  get_files_by_cluster(w.cluster,  ".jnc.gz")
         map =  get_files_by_cluster(w.cluster,  ".map.gz")
         psi =  get_files_by_cluster(w.cluster,  ".psi.gz")
-
+    output:
+        merged_gene = "Whippet/Quant/Merge/{cluster}.gene.tpm.tsv"
+        merged_isoform = "Whippet/Quant/Merge/{cluster}.isoform.tpm.tsv"
+    shell:
+        "python scripts/merge_quant.py Gene {output.merged_gene} {input.gene} && python scripts/merge_quant.py Isoform {output.merged_isoform} {input.isoform}"
+        
+        
 rule all_quant:
-    input: expand("Whippet/Quant/{sample}.psi.gz", sample=sample_files.keys())
+    #input: expand("Whippet/Quant/{sample}.psi.gz", sample=sample_files.keys())
+    input: 
+        expand("Whippet/Quant/Merge/{cluster}.gene.tpm.tsv", sample=samples_by_cluster.keys())
+        expand("Whippet/Quant/Merge/{cluster}.isoform.tpm.tsv", sample=samples_by_cluster.keys())
+    
+
