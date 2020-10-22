@@ -40,7 +40,7 @@ if str2bool(config["paired_end"])==False:
             temp("Whippet/Quant/{sample}.isoform.tpm.gz"),
             temp("Whippet/Quant/{sample}.jnc.gz"),
             temp("Whippet/Quant/{sample}.map.gz"),
-            temp("Whippet/Quant/{sample}.psi.gz)"
+            temp("Whippet/Quant/{sample}.psi.gz")
         shell:
             "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags}"
 
@@ -61,7 +61,7 @@ elif str2bool(config["paired_end"])==True:
             temp("Whippet/Quant/{sample}.isoform.tpm.gz"),
             temp("Whippet/Quant/{sample}.jnc.gz"),
             temp("Whippet/Quant/{sample}.map.gz"),
-            temp("Whippet/Quant/{sample}.psi.gz)"
+            temp("Whippet/Quant/{sample}.psi.gz")
         shell:
             "julia {params.bin}/whippet-quant.jl {input.rd1} {input.rd2} -x {input.index} -o {params.output} {params.other_flags}"
             
