@@ -67,15 +67,15 @@ elif str2bool(config["paired_end"])==True:
             
 def get_files_by_cluster(cluster, ext):
     path="Whippet/Quant/"
-    return([path + sample_files[x] + ext for x in samples_by_cluster[cluster]])
+    return([path + sample_files[x] + ext for x in samples_by_cluster[cluster]]
 
 rule merge_quant_by_cluster:
     input:
-        gene = get_files_by_cluster(w.cluster, ".gene.tpm.gz"),
-        isoform = get_files_by_cluster(w.cluster,  ".isoform.tpm.gz"),
-        jnc =  get_files_by_cluster(w.cluster,  ".jnc.gz"),
-        map =  get_files_by_cluster(w.cluster,  ".map.gz"),
-        psi =  get_files_by_cluster(w.cluster,  ".psi.gz")
+        gene = lambda w : get_files_by_cluster(w.cluster, ".gene.tpm.gz"),
+        isoform = lambda w : get_files_by_cluster(w.cluster,  ".isoform.tpm.gz"),
+        jnc =  lambda w : get_files_by_cluster(w.cluster,  ".jnc.gz"),
+        map =  lambda w : get_files_by_cluster(w.cluster,  ".map.gz"),
+        psi =  lambda w : get_files_by_cluster(w.cluster,  ".psi.gz")
     output:
         merged_gene = "Whippet/Quant/Merge/{cluster}.gene.tpm.tsv",
         merged_isoform = "Whippet/Quant/Merge/{cluster}.isoform.tpm.tsv"
