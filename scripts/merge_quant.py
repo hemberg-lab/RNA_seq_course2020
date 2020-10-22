@@ -27,4 +27,4 @@ def main(mode, out_file, file_list  ):
                 writer.writerow(row)
                 
 if __name__ == '__main__':
-    main(sys.argv[1], sys.argv[2], sys.argv[2:])
+    main(sys.argv[1], sys.argv[2], sys.argv[3:])
