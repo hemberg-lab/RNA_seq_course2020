@@ -24,49 +24,75 @@ def circ():
     return(param)
     
 
-if str2bool(config["paired_end"])==False:
+if str2bool(config.get("group_by_cluster", False)):
 
-    rule  whippet_quant:
-        input:
-            #fastq = "FASTQ/{sample}.fastq.gz",
-            fastq = lambda w : sample_files[w.sample],
-            index = "Whippet/Index/whippet.jls"
-        params:
-            bin = config["whippet_bin_folder"],
-            output = "Whippet/Quant/{sample}",
-            other_flags = circ()
-        output:
-            temp("Whippet/Quant/{sample}.gene.tpm.gz"),
-            temp("Whippet/Quant/{sample}.isoform.tpm.gz"),
-            temp("Whippet/Quant/{sample}.jnc.gz"),
-            temp("Whippet/Quant/{sample}.map.gz"),
-            temp("Whippet/Quant/{sample}.psi.gz")
-        shell:
-            "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags}"
+    if str2bool(config["paired_end"])==False:
+
+        rule  whippet_quant:
+            input:
+                fastq = lambda w : sample_files[w.sample],
+                index = "Whippet/Index/whippet.jls"
+            params:
+                bin = config["whippet_bin_folder"],
+                output = "Whippet/Quant/{cluster}/{sample}",
+                other_flags = circ()
+            output:
+                temp("Whippet/Quant/{cluster}/{sample}.gene.tpm.gz"),
+                temp("Whippet/Quant/{cluster}/{sample}.isoform.tpm.gz"),
+                temp("Whippet/Quant/{cluster}/{sample}.jnc.gz"),
+                temp("Whippet/Quant/{cluster}/{sample}.map.gz"),
+                temp("Whippet/Quant/{cluster}/{sample}.psi.gz")
+            shell:
+                "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags}"
 
 
-elif str2bool(config["paired_end"])==True:
+    elif str2bool(config["paired_end"])==True:
+    
+        print("paired end not yet supported for single cell")
+else:
+  
+    if str2bool(config["paired_end"])==False:
 
-    rule  whippet_quant:
-        input:
-            rd1 = "FASTQ/{sample}_1.fastq.gz",
-            rd2 = "FASTQ/{sample}_2.fastq.gz",
-            index = "Whippet/Index/whippet.jls"
-        params:
-            bin = config["whippet_bin_folder"],
-            output = "Whippet/Quant/{sample}",
-            other_flags = circ()
-        output:
-            temp("Whippet/Quant/{sample}.gene.tpm.gz"),
-            temp("Whippet/Quant/{sample}.isoform.tpm.gz"),
-            temp("Whippet/Quant/{sample}.jnc.gz"),
-            temp("Whippet/Quant/{sample}.map.gz"),
-            temp("Whippet/Quant/{sample}.psi.gz")
-        shell:
-            "julia {params.bin}/whippet-quant.jl {input.rd1} {input.rd2} -x {input.index} -o {params.output} {params.other_flags}"
+        rule  whippet_quant:
+            input:
+                fastq = "FASTQ/{sample}.fastq.gz",
+                index = "Whippet/Index/whippet.jls"
+            params:
+                bin = config["whippet_bin_folder"],
+                output = "Whippet/Quant/{sample}",
+                other_flags = circ()
+            output:
+                temp("Whippet/Quant/{sample}.gene.tpm.gz"),
+                temp("Whippet/Quant/{sample}.isoform.tpm.gz"),
+                temp("Whippet/Quant/{sample}.jnc.gz"),
+                temp("Whippet/Quant/{sample}.map.gz"),
+                temp("Whippet/Quant/{sample}.psi.gz")
+            shell:
+                "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags}"
+
+
+    elif str2bool(config["paired_end"])==True:
+
+        rule  whippet_quant:
+            input:
+                rd1 = "FASTQ/{sample}_1.fastq.gz",
+                rd2 = "FASTQ/{sample}_2.fastq.gz",
+                index = "Whippet/Index/whippet.jls"
+            params:
+                bin = config["whippet_bin_folder"],
+                output = "Whippet/Quant/{sample}",
+                other_flags = circ()
+            output:
+                temp("Whippet/Quant/{sample}.gene.tpm.gz"),
+                temp("Whippet/Quant/{sample}.isoform.tpm.gz"),
+                temp("Whippet/Quant/{sample}.jnc.gz"),
+                temp("Whippet/Quant/{sample}.map.gz"),
+                temp("Whippet/Quant/{sample}.psi.gz")
+            shell:
+                "julia {params.bin}/whippet-quant.jl {input.rd1} {input.rd2} -x {input.index} -o {params.output} {params.other_flags}"
             
 def get_files_by_cluster(cluster, ext):
-    path="Whippet/Quant/"
+    path="Whippet/Quant/" + cluster + "/"
     return([path + x + ext for x in samples_by_cluster[cluster]])
 
 
