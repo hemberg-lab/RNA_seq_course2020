@@ -104,7 +104,7 @@ rule merge_quant_by_cluster:
         map =  lambda w : get_files_by_cluster(w.cluster, ".map.gz"),
         psi =  lambda w : get_files_by_cluster(w.cluster, ".psi.gz")
     params:
-        cluster_dir = "Whippet/Quant/Merge/{cluster}"
+        cluster_dir = "Whippet/Quant/{cluster}"
     output:
         merged_gene = "Whippet/Quant/Merge/{cluster}.gene.tpm.tsv",
         merged_isoform = "Whippet/Quant/Merge/{cluster}.isoform.tpm.tsv"
