@@ -75,6 +75,7 @@ if str2bool(config.get("group_by_cluster", False)):
 	cluster_pools = defaultdict(list)
 	pool_names = set([])
 	sample_files = dict()
+	sample_cluster = dict()
 	
 	with open(config["units"]) as file:
 
@@ -91,6 +92,7 @@ if str2bool(config.get("group_by_cluster", False)):
 		for row in sample_file:
 
 			samples_by_cluster[row["condition"].replace(" ", "_")].append(row["sample"])
+			sample_cluster[row["sample"]] = [row["condition"].replace(" ", "_")]
 			try:
 				cluster_partitions[row["condition"].replace(" ", "_")] = int(row["pools"])
 			except KeyError:
