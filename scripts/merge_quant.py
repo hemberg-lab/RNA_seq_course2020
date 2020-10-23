@@ -11,7 +11,7 @@ def main(mode, out_file, file_list  ):
 
     for file in file_list:
 
-        with gzip.open(file, mode="rt") as f, open(out_file, 'w') as out:
+        with gzip.open(file, mode="rt") as f, open(out_file, 'a') as out:
 
             header = ["Sample", mode, "TpM", "Read_Counts"]
 
