@@ -81,7 +81,7 @@ rule merge_quant_by_cluster:
         merged_gene = "Whippet/Quant/Merge/{cluster}.gene.tpm.tsv",
         merged_isoform = "Whippet/Quant/Merge/{cluster}.isoform.tpm.tsv"
     shell:
-        "python scripts/merge_quant.py Gene {output.merged_gene} {input.gene} && python scripts/merge_quant.py Isoform {output.merged_isoform} {input.isoform}"
+        "echo {input.gene} | xargs python scripts/merge_quant.py Gene {output.merged_gene}  && echo {input.isoform} | xargs python scripts/merge_quant.py Isoform {output.merged_isoform}"
         
         
 rule all_quant:
