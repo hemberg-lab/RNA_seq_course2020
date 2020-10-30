@@ -28,7 +28,7 @@ def main(mode, out_file, file_list  ):
                     writer.writerow(row)
                 
 if __name__ == '__main__':
-    main(snakemake.params["feature"], snakemake.output["merged"],  snakemake.input["in"])
+    main(snakemake.params["feature"], snakemake.output["merged"],  snakemake.input["files"])
 
         
         
