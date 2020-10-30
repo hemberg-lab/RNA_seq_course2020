@@ -96,20 +96,34 @@ def get_files_by_cluster(cluster, ext):
     return([path + x + ext for x in samples_by_cluster[cluster]])
 
 
-rule merge_quant_by_cluster:
+rule merge_quant_by_cluster_gene:
     input:
-        gene = lambda w : get_files_by_cluster(w.cluster, ".gene.tpm.gz"),
-        isoform = lambda w : get_files_by_cluster(w.cluster, ".isoform.tpm.gz"),
+        in = lambda w : get_files_by_cluster(w.cluster, ".gene.tpm.gz"),
         jnc =  lambda w : get_files_by_cluster(w.cluster, ".jnc.gz"),
         map =  lambda w : get_files_by_cluster(w.cluster, ".map.gz"),
         psi =  lambda w : get_files_by_cluster(w.cluster, ".psi.gz")
     params:
-        cluster_dir = "Whippet/Quant/{cluster}"
+        cluster_dir = "Whippet/Quant/{cluster}",
+        feature = "Gene"
     output:
-        merged_gene = "Whippet/Quant/Merge/{cluster}.gene.tpm.tsv",
-        merged_isoform = "Whippet/Quant/Merge/{cluster}.isoform.tpm.tsv"
+        merged = "Whippet/Quant/Merge/{cluster}.gene.tpm.tsv"
     script:
-        "python ../scripts/merge_quant.py Gene && python ../scripts/merge_quant.py Isoform "
+        "../scripts/merge_quant.py"
+        
+        
+rule merge_quant_by_cluster_isoform:
+    input:
+        in = lambda w : get_files_by_cluster(w.cluster, ".isoform.tpm.gz"),
+        jnc =  lambda w : get_files_by_cluster(w.cluster, ".jnc.gz"),
+        map =  lambda w : get_files_by_cluster(w.cluster, ".map.gz"),
+        psi =  lambda w : get_files_by_cluster(w.cluster, ".psi.gz")
+    params:
+        cluster_dir = "Whippet/Quant/{cluster}",
+        feature = "Isoform"
+    output:
+        merged = "Whippet/Quant/Merge/{cluster}.isoform.tpm.tsv"
+    script:
+        "../scripts/merge_quant.py"
         
         
 rule all_quant:
