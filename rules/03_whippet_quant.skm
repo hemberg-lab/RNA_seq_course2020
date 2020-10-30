@@ -109,7 +109,7 @@ rule merge_quant_by_cluster:
         merged_gene = "Whippet/Quant/Merge/{cluster}.gene.tpm.tsv",
         merged_isoform = "Whippet/Quant/Merge/{cluster}.isoform.tpm.tsv"
     script:
-        "python ../scripts/merge_quant.py Gene && python scripts/merge_quant.py Isoform "
+        "python ../scripts/merge_quant.py Gene && python ../scripts/merge_quant.py Isoform "
         
         
 rule all_quant:
