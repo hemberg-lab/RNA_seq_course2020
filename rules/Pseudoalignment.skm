@@ -63,7 +63,7 @@ if str2bool(config["paired_end"])==True:
             r2 = "FASTQ/{sample}_2.fastq.gz",
             index = "salmon/transcriptome_index"
         output:
-            quant = 'salmon/{sample}/quant.sf',
+            quant = temp('salmon/{sample}/quant.sf'),
             lib = 'salmon/{sample}/lib_format_counts.json'
         log:
             'logs/salmon/{sample}.log'
@@ -75,3 +75,33 @@ if str2bool(config["paired_end"])==True:
         threads: 2
         wrapper:
             "0.49.0/bio/salmon/quant"
+
+rule move_quant_and_clean:
+    input:
+        'salmon/{sample}/quant.sf'
+    output:
+        temp('salmon/{sample}.quant.sf')
+    params:
+        dir = 'salmon/{sample}/'
+    shell:
+        "cp {input} {output} & rm -rf {params.dir}"
+
+def get_files_by_cluster_salmon(cluster, ext):
+    path="salmon/"
+    return([path + x + ext for x in samples_by_cluster[cluster]])
+
+rule merge_salmon_quant_by_cluster:
+    input:
+        lambda w : get_files_by_cluster(w.cluster, ".sf")
+    params:
+        feature = "Isoform_salmon"
+    output:
+        merged = "salmon/Merge/{cluster}.sf.tsv"
+    script:
+        "../scripts/merge_quant.py"
+        
+rule all_quant_salmon:
+    input: 
+        expand("salmon/Merge/{cluster}.sf.tsv", cluster=samples_by_cluster.keys())
+        
+        
