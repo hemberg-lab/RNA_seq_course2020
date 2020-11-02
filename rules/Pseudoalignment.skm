@@ -43,7 +43,7 @@ if str2bool(config["paired_end"])==False:
         params:
             # optional parameters
             libtype ="S",
-            out_dir = 'salmon/{sample}'
+            out_dir = 'salmon/{sample}',
             #zip_ext = bz2 # req'd for bz2 files ('bz2'); optional for gz files('gz')
             extra=""
         threads: 2
