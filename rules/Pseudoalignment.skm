@@ -42,7 +42,7 @@ if str2bool(config["paired_end"])==False:
             'logs/salmon/{sample}.log'
         params:
             # optional parameters
-            #libtype ="S",
+            libtype ="S",
             #zip_ext = bz2 # req'd for bz2 files ('bz2'); optional for gz files('gz')
             extra=""
         threads: 2
