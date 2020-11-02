@@ -20,12 +20,12 @@ rule salmon_index:
         "logs/salmon/transcriptome_index.log"
     threads: 2
     params:
-        # optional parameters
+        libtype = "A",
         extra=""
     conda:
         "../envs/salmon.yaml"
     shell:
-        "salmon index -t {input} -i {output} --threads {threads}"
+        "salmon index -t {input} -i {output} --threads {threads} -l {params.libtype}"
 #    wrapper:
 #        "0.49.0/bio/salmon/index"
         
