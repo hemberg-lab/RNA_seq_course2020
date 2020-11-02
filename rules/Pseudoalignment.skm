@@ -1,9 +1,10 @@
 rule get_transcriptome:
     input:
-        genome = "Genome/" + config["assembly"] + ".fa",
-        gtf = "gffcompare/extended_ref_annotation.gtf", 
+        genome = config["Genome"],
+        gtf = config["GTF"]
     output:
-        "gffcompare/extended_ref_annotation.fa"
+        #"gffcompare/extended_ref_annotation.fa"
+        "Genome/transcriptome.fa"
     conda: "../envs/core.yaml"
     shell:
         "gffread -w {output} -g {input}"
@@ -11,7 +12,8 @@ rule get_transcriptome:
 
 rule salmon_index:
     input:
-        "gffcompare/extended_ref_annotation.fa"
+        #"gffcompare/extended_ref_annotation.fa"
+        "Genome/transcriptome.fa"
     output:
         directory("salmon/transcriptome_index")
     log:
