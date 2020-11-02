@@ -261,7 +261,8 @@ include: "rules/Pseudoalignment.skm"
      
 rule run_salmon:
     input:
-        expand( 'salmon/{sample}/quant.sf', sample=SAMPLES)
+        #expand( 'salmon/{sample}/quant.sf', sample=SAMPLES)
+        expand( 'salmon/{sample}/quant.sf', sample=sample_files.keys())
     
 # rule genecount:
 #     input:
