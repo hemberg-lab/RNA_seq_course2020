@@ -68,17 +68,17 @@ else:
             "julia {params.bin}/whippet-quant.jl {input.fastq} -x {input.index} -o {params.output} {params.other_flags}"
 
 
-def get_files_by_cluster(cluster, ext):
-    path="Whippet/Quant/"
+def get_files_by_cluster_ref(cluster, ext):
+    path="Whippet/Quant/ref/"
     return([path + x + ext for x in samples_by_cluster[cluster]])
 
 
 rule merge_quant_by_cluster_gene_ref:
     input:
-        files = lambda w : get_files_by_cluster(w.cluster, ".gene.tpm.gz"),
-        jnc =  lambda w : get_files_by_cluster(w.cluster, ".jnc.gz"),
-        map =  lambda w : get_files_by_cluster(w.cluster, ".map.gz"),
-        psi =  lambda w : get_files_by_cluster(w.cluster, ".psi.gz")
+        files = lambda w : get_files_by_cluster_ref(w.cluster, ".gene.tpm.gz"),
+        jnc =  lambda w : get_files_by_cluster_ref(w.cluster, ".jnc.gz"),
+        map =  lambda w : get_files_by_cluster_ref(w.cluster, ".map.gz"),
+        psi =  lambda w : get_files_by_cluster_ref(w.cluster, ".psi.gz")
     params:
         cluster_dir = "Whippet/Quant/ref/{cluster}",
         feature = "Gene"
@@ -90,10 +90,10 @@ rule merge_quant_by_cluster_gene_ref:
         
 rule merge_quant_by_cluster_isoform_ref:
     input:
-        files = lambda w : get_files_by_cluster(w.cluster, ".isoform.tpm.gz"),
-        jnc =  lambda w : get_files_by_cluster(w.cluster, ".jnc.gz"),
-        map =  lambda w : get_files_by_cluster(w.cluster, ".map.gz"),
-        psi =  lambda w : get_files_by_cluster(w.cluster, ".psi.gz")
+        files = lambda w : get_files_by_cluster_ref(w.cluster, ".isoform.tpm.gz"),
+        jnc =  lambda w : get_files_by_cluster_ref(w.cluster, ".jnc.gz"),
+        map =  lambda w : get_files_by_cluster_ref(w.cluster, ".map.gz"),
+        psi =  lambda w : get_files_by_cluster_ref(w.cluster, ".psi.gz")
     params:
         cluster_dir = "Whippet/Quant/ref/{cluster}",
         feature = "Isoform"
