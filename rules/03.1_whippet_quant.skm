@@ -34,7 +34,7 @@ if str2bool(config.get("group_by_cluster", False)):
     rule  whippet_quant_red:
         input:
             fastq = lambda w : sample_files[w.sample],
-            index = "Whippet/Index/whippet.jls"
+            index = "Whippet/Index/ref/whippet.jls"
         params:
             bin = config["whippet_bin_folder"],
             output = "Whippet/Quant/ref/{sample}",
