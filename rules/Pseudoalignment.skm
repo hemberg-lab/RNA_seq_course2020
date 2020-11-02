@@ -23,7 +23,7 @@ rule salmon_index:
         # optional parameters
         extra=""
     wrapper:
-        "0.49.0/bio/salmon/index"
+        "0.67.0/bio/salmon/index"
         
 if str2bool(config["paired_end"])==False:        
         
@@ -44,7 +44,7 @@ if str2bool(config["paired_end"])==False:
             extra=""
         threads: 2
         wrapper:
-            "0.49.0/bio/salmon/quant"
+            "0.67.0/bio/salmon/quant"
 
 
 if str2bool(config["paired_end"])==True:        
