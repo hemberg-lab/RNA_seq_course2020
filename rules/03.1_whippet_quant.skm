@@ -31,7 +31,7 @@ def sample_to_unit(wildcards):
 
 if str2bool(config.get("group_by_cluster", False)):
 
-    rule  whippet_quant_red:
+    rule  whippet_quant_ref:
         input:
             fastq = lambda w : sample_files[w.sample],
             index = "Whippet/Index/ref/whippet.jls"
