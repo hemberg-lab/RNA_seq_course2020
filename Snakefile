@@ -257,11 +257,11 @@ rule featureCounts:
 
 
 
-# include: "rules/Pseudoalignment.skm"    
+include: "rules/Pseudoalignment.skm"    
      
-# rule run_salmon:
-#     input:
-#         expand( 'salmon/{sample}/quant.sf', sample=SAMPLES)
+rule run_salmon:
+    input:
+        expand( 'salmon/{sample}/quant.sf', sample=SAMPLES)
     
 # rule genecount:
 #     input:
@@ -272,7 +272,7 @@ include: "rules/01_stringtie.skm"
 include: "rules/02_bridge.skm"  
 #include: "rules/03_whippet_quant.skm"
 include: "rules/03.1_whippet_quant.skm"
-
+	
 #rule get_whippet_quant:    #This is a calling point to run all whippet analysis
 #    input:
 #        expand("Whippet/Quant/{sample}.psi.gz", sample=SAMPLES)
