@@ -50,7 +50,7 @@ if str2bool(config["paired_end"])==False:
         conda:
             "../envs/salmon.yaml"
         shell:
-            "salmon quant -i {input.index} -r {input.r}  -p {threads} -l {params.libtype} -o {params.out_dir}"        
+            "salmon quant -i {input.index} -l {params.libtype} -r {input.r}  -p {threads}  -o {params.out_dir}"        
 #        wrapper:
 #            "0.49.0/bio/salmon/quant"
 
