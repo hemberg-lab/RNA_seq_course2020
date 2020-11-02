@@ -1,0 +1,6 @@
+hannels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - salmon
