@@ -92,7 +92,7 @@ def get_files_by_cluster_salmon(cluster, ext):
 
 rule merge_salmon_quant_by_cluster:
     input:
-        lambda w : get_files_by_cluster_salmon(w.cluster, "quant.sf")
+        lambda w : get_files_by_cluster_salmon(w.cluster, ".quant.sf")
     params:
         feature = "Isoform_salmon"
     output:
