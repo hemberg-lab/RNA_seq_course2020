@@ -79,10 +79,10 @@ if str2bool(config["paired_end"])==True:
 rule move_quant_and_clean:
     input:
         'salmon/{sample}/quant.sf'
-    output:
-        temp('salmon/{sample}.quant.sf')
     params:
         dir = 'salmon/{sample}/'
+    output:
+        temp('salmon/{sample}.quant.sf')
     shell:
         "cp {input} {output} & rm -rf {params.dir}"
 
