@@ -76,7 +76,7 @@ if str2bool(config["paired_end"])==True:
         wrapper:
             "0.49.0/bio/salmon/quant"
 
-rule move_quant_and_clean:
+rule move_quant:
     input:
         'salmon/{sample}/quant.sf'
     params:
@@ -84,7 +84,7 @@ rule move_quant_and_clean:
     output:
         temp('salmon/{sample}.quant.sf')
     shell:
-        "cp {input} {output} & rm -rf {params.dir}"
+        "cp {input} {output}"
 
 def get_files_by_cluster_salmon(cluster, ext):
     path="salmon/"
