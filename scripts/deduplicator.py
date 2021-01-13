@@ -1,8 +1,18 @@
-#file = "/lustre/scratch117/cellgen/team218/gp7/Joe/Test/E6.5-1_i1-AAACTGTGCTACGAGC.fastq.gz"
-UMI_flag = "RX"
+from snakemake.utils import min_version
+from Bio import pairwise2
+from Bio.pairwise2 import format_alignment
+import gzip
+from Bio import SeqIO
+from collections import defaultdict
+from Bio.SeqRecord import SeqRecord
+import numpy as np
 
-file = "/nfs/team205/jdj1/AS/bam_noribo/fastq/E8.5-10_i22-AAACAAACAGGCAGTT.fastq.gz"        
-out = gzip.open("/lustre/scratch117/cellgen/team218/gp7/Joe/Test/E8.5-10_i22-AAACAAACAGGCAGTT..deduplicated.fastq.gz", "wt")
+
+
+#file = "/lustre/scratch117/cellgen/team218/gp7/Joe/Test/E6.5-1_i1-AAACTGTGCTACGAGC.fastq.gz"
+UMI_flag =  snakemake.params["UMI_flag"]
+file =  snakemake.input[0] 
+out = gzip.open( snakemake.output[0] , "wt")
 
 total_reads = []
 
