@@ -157,7 +157,7 @@ rule download_sample:
 	input:
 		"download/{sample}.download.sh"
 	output:
-		temp("FASTQ/raw/{sample}.fastq.gz")
+		temp("FASTQ/{sample}.fastq.gz")
 	conda:
 		"../envs/download.yaml"        
 	resources:
@@ -168,15 +168,6 @@ rule download_sample:
 		"bash {input} 2> {log}" 
 
 
-rule deduplicate:
-	input:
-		"download/{sample}.download.sh"
-	params:
-		UMI_flag = "RX"
-	output:
-		temp("FASTQ/{sample}.fastq.gz")
-	script:
-		"../scripts/deduplicator.py " 
 		
   
 
