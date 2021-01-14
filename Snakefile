@@ -44,9 +44,9 @@ def partition (list_in, n):  # Function to do random pooling
 #########################################################################################    
 
 
-def get_deduplicated_path(file):
+def get_deduplicated_path(x):
     
-    return("FASTQ/Deduplicated/" + file.split("/")[-1])
+    return("FASTQ/Deduplicated/" + x.split("/")[-1])
 
 
 
