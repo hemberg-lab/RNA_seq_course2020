@@ -120,7 +120,8 @@ if str2bool(config.get("group_by_cluster", False)):
 		params:
 			UMI_flag = "RX"
 		output:
-			temp("FASTQ/Deduplicated/{sample}.fastq.gz")
+			temp("FASTQ/Deduplicated/{sample}.fastq.gz"),
+			"FASTQ/Deduplicated/{sample}.count.txt"
 		script:
 			"../scripts/deduplicator.py " 			
 			
