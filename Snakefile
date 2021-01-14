@@ -116,11 +116,11 @@ if str2bool(config.get("group_by_cluster", False)):
 
 	rule deduplicate:
 		input:
-			fastq = lambda w : cluster_pools[(w.cluster, w.pool)]
+			fastq = config["input_path"] + "{sample}.fastq.gz"
 		params:
 			UMI_flag = "RX"
 		output:
-			temp("FASTQ/Deduplicated/{sample}.fastq.gz")
+			"FASTQ/Deduplicated/{sample}.fastq.gz"
 		script:
 			"../scripts/deduplicator.py " 			
 			
