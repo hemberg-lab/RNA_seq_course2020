@@ -119,6 +119,8 @@ if str2bool(config.get("group_by_cluster", False)):
 			fastq = config["input_path"] + "{sample}.fastq.gz"
 		params:
 			UMI_flag = "RX"
+		resources:
+			get_data = 1  
 		output:
 			temp("FASTQ/Deduplicated/{sample}.fastq.gz"),
 			"FASTQ/Deduplicated/{sample}.count.txt"
