@@ -44,12 +44,8 @@ def partition (list_in, n):  # Function to do random pooling
 #########################################################################################    
 
 
-def get_deduplicated_path(x):
-    
-    return("FASTQ/Deduplicated/" + x.split("/")[-1])
-
-
-
+def get_deduplicated_path(file_list): 
+    return([ "FASTQ/Deduplicated/" + x.split("/")[-1] for x in file_list])
 
     
 rule hisat2_Genome_index:  #This is a rule and represent the first step of mapping the reads with hisat (indexing the genome)
