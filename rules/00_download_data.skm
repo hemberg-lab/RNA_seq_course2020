@@ -157,7 +157,7 @@ rule download_sample:
 	input:
 		"download/{sample}.download.sh"
 	output:
-		temp("FASTQ/{sample}.fastq.gz")
+		temp("FASTQ/raw/{sample}.fastq.gz")
 	conda:
 		"../envs/download.yaml"        
 	resources:
