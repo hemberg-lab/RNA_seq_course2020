@@ -42,7 +42,14 @@ def partition (list_in, n):  # Function to do random pooling
 # genome (hisat2) and count the reads that map to each gene (featureCounts). 
 #
 #########################################################################################    
- 
+
+
+def get_deduplicated_path(file):
+    
+    return("FASTQ/Deduplicated/" + file.split("/")[-1])
+
+
+
 
     
 rule hisat2_Genome_index:  #This is a rule and represent the first step of mapping the reads with hisat (indexing the genome)
@@ -109,10 +116,22 @@ if str2bool(config.get("group_by_cluster", False)):
 			files = [ sample_files[x] for x in p]
 			cluster_pools[(cluster, str(n))] = files
 			n+=1
+
+
+	rule deduplicate:
+		input:
+			fastq = lambda w : cluster_pools[(w.cluster, w.pool)]
+		params:
+			UMI_flag = "RX"
+		output:
+			temp("FASTQ/Deduplicated/{sample}.fastq.gz")
+		script:
+			"../scripts/deduplicator.py " 			
 			
 	rule get_sample_clusters:
 		input:
-			fastq = lambda w : cluster_pools[(w.cluster, w.pool)]
+			#fastq = lambda w : cluster_pools[(w.cluster, w.pool)]
+			fastq = get_deduplicated_path(lambda w : cluster_pools[(w.cluster, w.pool)])
 		output:
 			temp("Sample_pools/{cluster}-{pool}.fastq.gz")
 		shell:
