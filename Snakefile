@@ -131,7 +131,7 @@ if str2bool(config.get("group_by_cluster", False)):
 	rule get_sample_clusters:
 		input:
 			#fastq = lambda w : cluster_pools[(w.cluster, w.pool)]
-			fastq = get_deduplicated_path(lambda w : cluster_pools[(w.cluster, w.pool)])
+			fastq = lambda w : get_deduplicated_path(cluster_pools[(w.cluster, w.pool)])
 		output:
 			temp("Sample_pools/{cluster}-{pool}.fastq.gz")
 		shell:
