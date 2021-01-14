@@ -13,6 +13,7 @@ import numpy as np
 UMI_flag =  snakemake.params["UMI_flag"]
 file =  snakemake.input[0] 
 out = gzip.open( snakemake.output[0] , "wt")
+out2 = open( snakemake.output[1] , "wt")
 
 total_reads = []
 
@@ -59,6 +60,7 @@ for read in sorted(total_reads, key=lambda x: x[4], reverse=True):
         UMI_dict[UMI].append(info)
             
 
+count = 0
 
 for umi in UMI_dict:
     
@@ -69,4 +71,9 @@ for umi in UMI_dict:
         read.letter_annotations["phred_quality"] = qual   
         out.write(record.format("fastq"))
         
+        count += 1
+        
+out2.write(str(count))        
+        
 out.close()
+out2.close()
