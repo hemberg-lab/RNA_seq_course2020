@@ -10,4 +10,3 @@ dependencies:
   - bedtools=2.29.2
   - biopython
   - gffread
-  - numpy
