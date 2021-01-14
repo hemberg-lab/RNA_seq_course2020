@@ -166,6 +166,18 @@ rule download_sample:
 		"logs/download.{sample}.log"   
 	shell:
 		"bash {input} 2> {log}" 
+
+
+rule deduplicate:
+	input:
+		"download/{sample}.download.sh"
+	params:
+		UMI_flag = "RX"
+	output:
+		temp("FASTQ/{sample}.fastq.gz")
+	script:
+		"../scripts/deduplicator.py " 
+		
   
 
 rule download_sample_ncbi_paired:
