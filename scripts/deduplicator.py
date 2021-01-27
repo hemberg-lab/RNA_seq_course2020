@@ -13,7 +13,7 @@ import numpy as np
 UMI_flag =  snakemake.params["UMI_flag"]
 file =  snakemake.input[0] 
 out = gzip.open( snakemake.output[0] , "wt")
-out2 = open( snakemake.output[1] , "wt")
+#out2 = open( snakemake.output[1] , "wt")
 
 total_reads = []
 
@@ -73,7 +73,7 @@ for umi in UMI_dict:
         
         count += 1
         
-out2.write(str(count))        
+#out2.write(str(count))        
         
 out.close()
-out2.close()
+#out2.close()
