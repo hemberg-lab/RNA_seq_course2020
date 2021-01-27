@@ -69,7 +69,7 @@ for umi in UMI_dict:
 
         read = SeqRecord( seq , id = ID, description = "" )
         read.letter_annotations["phred_quality"] = qual   
-        out.write(record.format("fastq"))
+        out.write(read.format("fastq"))
         
         count += 1
         
