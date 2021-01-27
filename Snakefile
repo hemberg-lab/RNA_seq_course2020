@@ -124,8 +124,8 @@ if str2bool(config.get("group_by_cluster", False)):
 		conda:
 			"envs/core.yaml"
 		output:
-			temp("FASTQ/Deduplicated/{sample}.fastq.gz"),
-			"FASTQ/Deduplicated/{sample}.count.txt"
+			"FASTQ/Deduplicated/{sample}.fastq.gz"
+			#"FASTQ/Deduplicated/{sample}.count.txt"
 		script:
 			"scripts/deduplicator.py"
 			
