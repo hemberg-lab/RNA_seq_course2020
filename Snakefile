@@ -52,20 +52,20 @@ hisat2_extract_splice_sites.py genome.gtf > genome.ss
 hisat2_extract_exons.py genome.gtf > genome.exon
 
 rule extract_splice_sites:
-	input:
-		config["GTF"]
-	output:
-		"Genome/Index/genome.ss"
+    input:
+        config["GTF"]
+    output:
+        "Genome/Index/genome.ss"
     conda:
         "envs/core.yaml"
     shell:
         "hisat2_extract_splice_sites.py  {input} > {output}"	
 		
 rule hisat2_extract_exons:
-	input:
-		config["GTF"]
-	output:
-		"Genome/Index/genome.exon"
+    input:
+        config["GTF"]
+    output:
+        "Genome/Index/genome.exon"
     conda:
         "envs/core.yaml"
     shell:
@@ -74,8 +74,8 @@ rule hisat2_extract_exons:
 rule hisat2_Genome_index:  #This is a rule and represent the first step of mapping the reads with hisat (indexing the genome)
     input:
         genome = config["Genome"]
-		exons = "Genome/Index/genome.exon"
-		ss = "Genome/Index/genome.ss"
+        exons = "Genome/Index/genome.exon"
+        ss = "Genome/Index/genome.ss"
         #"Genome/" + config["assembly"] + ".fa"
     output:
         "Genome/Index/" + config["assembly"] + ".1.ht2"
