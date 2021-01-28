@@ -134,7 +134,7 @@ if str2bool(config.get("group_by_cluster", False)):
 			#fastq = lambda w : cluster_pools[(w.cluster, w.pool)]
 			fastq = lambda w : get_deduplicated_path(cluster_pools[(w.cluster, w.pool)])
 		output:
-			temp("Sample_pools/{cluster}-{pool}.fastq.gz")
+			"Sample_pools/{cluster}-{pool}.fastq.gz"  #Keeping these files for now
 		shell:
 			"cat {input} > {output}"
 
