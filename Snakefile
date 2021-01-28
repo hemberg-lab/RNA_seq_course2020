@@ -177,7 +177,7 @@ if str2bool(config.get("group_by_cluster", False)):
 			conda:
 				"envs/core.yaml"
 			shell:
-				"hisat2 --dta -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+				"hisat2 --rna-strandness F --dta -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
 
 	elif str2bool(config["paired_end"])==True:
 		
