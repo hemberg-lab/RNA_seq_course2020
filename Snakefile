@@ -73,8 +73,8 @@ rule hisat2_extract_exons:
 		
 rule hisat2_Genome_index:  #This is a rule and represent the first step of mapping the reads with hisat (indexing the genome)
     input:
-        genome = config["Genome"]
-        exons = "Genome/Index/genome.exon"
+        genome = config["Genome"],
+        exons = "Genome/Index/genome.exon",
         ss = "Genome/Index/genome.ss"
         #"Genome/" + config["assembly"] + ".fa"
     output:
