@@ -47,10 +47,35 @@ def partition (list_in, n):  # Function to do random pooling
 def get_deduplicated_path(file_list): 
     return([ "FASTQ/Deduplicated/" + x.split("/")[-1] for x in file_list])
 
-    
+
+hisat2_extract_splice_sites.py genome.gtf > genome.ss
+hisat2_extract_exons.py genome.gtf > genome.exon
+
+rule extract_splice_sites:
+	input:
+		config["GTF"]
+	output:
+		"Genome/Index/genome.ss"
+    conda:
+        "envs/core.yaml"
+    shell:
+        "hisat2_extract_splice_sites.py  {input} > {output}"	
+		
+rule hisat2_extract_exons:
+	input:
+		config["GTF"]
+	output:
+		"Genome/Index/genome.exon"
+    conda:
+        "envs/core.yaml"
+    shell:
+        "hisat2_extract_exons.py  {input} > {output}"
+		
 rule hisat2_Genome_index:  #This is a rule and represent the first step of mapping the reads with hisat (indexing the genome)
     input:
-        config["Genome"]
+        genome = config["Genome"]
+		exons = "Genome/Index/genome.exon"
+		ss = "Genome/Index/genome.ss"
         #"Genome/" + config["assembly"] + ".fa"
     output:
         "Genome/Index/" + config["assembly"] + ".1.ht2"
@@ -60,7 +85,7 @@ rule hisat2_Genome_index:  #This is a rule and represent the first step of mappi
     log:
         "logs/hisat2_Genome_index.log"
     shell:
-        "hisat2-build -p {threads} {input} Genome/Index/" + config["assembly"]  + " 2> {log}"
+        "hisat2-build -p {threads} {input.genome} --exon {input.exons} --s {input.ss} Genome/Index/" + config["assembly"]  + " 2> {log}"
 
 
 def sample_to_unit(wildcards):
@@ -152,7 +177,7 @@ if str2bool(config.get("group_by_cluster", False)):
 			conda:
 				"envs/core.yaml"
 			shell:
-				"hisat2 -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
+				"hisat2 --dta -p {threads} -U {input.fastq} -x  Genome/Index/" + config["assembly"] +  "  > {output}  2> {log} "
 
 	elif str2bool(config["paired_end"])==True:
 		
