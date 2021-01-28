@@ -48,8 +48,8 @@ def get_deduplicated_path(file_list):
     return([ "FASTQ/Deduplicated/" + x.split("/")[-1] for x in file_list])
 
 
-hisat2_extract_splice_sites.py genome.gtf > genome.ss
-hisat2_extract_exons.py genome.gtf > genome.exon
+# hisat2_extract_splice_sites.py genome.gtf > genome.ss
+# hisat2_extract_exons.py genome.gtf > genome.exon
 
 rule extract_splice_sites:
     input:
