@@ -79,13 +79,13 @@ rule hisat2_Genome_index:  #This is a rule and represent the first step of mappi
         #"Genome/" + config["assembly"] + ".fa"
     output:
         "Genome/Index/" + config["assembly"] + ".1.ht2"
-    threads: 7
+    threads: 30
     conda:
         "envs/core.yaml"
     log:
         "logs/hisat2_Genome_index.log"
     shell:
-        "hisat2-build -p {threads} {input.genome} --exon {input.exons} -s {input.ss} Genome/Index/" + config["assembly"]  + " 2> {log}"
+        "hisat2-build -p {threads} {input.genome} --exon {input.exons} --ss {input.ss} Genome/Index/" + config["assembly"]  + " 2> {log}"
 
 
 def sample_to_unit(wildcards):
