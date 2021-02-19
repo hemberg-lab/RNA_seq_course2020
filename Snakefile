@@ -79,7 +79,7 @@ rule hisat2_Genome_index:  #This is a rule and represent the first step of mappi
         #"Genome/" + config["assembly"] + ".fa"
     output:
         "Genome/Index/" + config["assembly"] + ".1.ht2"
-    threads: 30
+    threads: 15
     conda:
         "envs/core.yaml"
     log:
