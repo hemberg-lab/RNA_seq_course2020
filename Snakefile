@@ -154,6 +154,10 @@ if str2bool(config.get("group_by_cluster", False)):
 		script:
 			"scripts/deduplicator.py"
 			
+	rule complete_deduplication:
+		input:
+			expand("FASTQ/Deduplicated/{sample}.fastq.gz", sample=list(samples["sample"]) )
+			
 	rule get_sample_clusters:
 		input:
 			#fastq = lambda w : cluster_pools[(w.cluster, w.pool)]
