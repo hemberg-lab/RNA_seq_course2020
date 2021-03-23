@@ -317,7 +317,7 @@ rule run_salmon:
 	
 rule get_bams:
     input:
-        expand( "hisat2/{cluster}-{pool}.sorted.bam" , sample=sample_files.keys())		
+        expand( "hisat2/{sample}.sorted.bam" , sample=pool_names)		
 
 # rule genecount:
 #     input:
