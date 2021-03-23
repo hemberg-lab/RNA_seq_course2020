@@ -248,7 +248,8 @@ rule bamstats:
     shell:
         "samtools stats {input} > {output.stats_txt} && plot-bamstats -p {params} {output.stats_txt}"
 
-      
+
+	
 ########
 
 #rule featureCounts:
@@ -312,7 +313,12 @@ rule run_salmon:
     input:
         #expand( 'salmon/{sample}/quant.sf', sample=SAMPLES)
         expand( 'salmon/{sample}/quant.sf', sample=sample_files.keys())
-    
+
+	
+rule get_bams:
+    input:
+        expand( hisat2/{sample}.sorted.bam , sample=sample_files.keys())		
+
 # rule genecount:
 #     input:
 #         "featureCounts/total_samples.gene_count.txt", 
