@@ -12,7 +12,7 @@ rule StringTie_filer:
     shell:
         "python scripts/StringTie_filter.py {input} {params} > {output}"
         
-rule extrend_refrence:
+rule extend_refrence:
     input:
         genome = config["Genome"],
         #genome = "Genome/" + config["assembly"] + ".fa",
