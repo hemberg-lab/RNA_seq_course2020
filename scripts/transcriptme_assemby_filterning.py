@@ -15,26 +15,21 @@ from Bio.Seq import Seq
 csv.field_size_limit(100000000)
 csv.field_size_limit()
 
-
+Genome = dict()
 
 
 def Genomictabulator(fasta):
-
-
 
 	f = open(fasta)
 
 	for chrfa in SeqIO.parse(f, "fasta"):
 		Genome[chrfa.id] = chrfa.seq
 
-
-
 	f.close()
 
 
 def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_gtf):
 
-    Genome = dict()
     #Genomictabulator("/lustre/scratch117/cellgen/team218/gp7/Genome/GRCm38/GRCm38.fa")
     Genomictabulator(genome_fasta)	
 	
