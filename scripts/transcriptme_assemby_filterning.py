@@ -219,10 +219,10 @@ def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_g
     with open(extended_ref_annotation) as gtf, open(out_gtf, "w") as out:
 
 
-	    reader = csv.reader(gtf, delimiter="\t")
-	    writer = csv.writer(out, delimiter="\t")
-	    exon_transcripts = defaultdict(list)
-	    annotated_exon = set()
+        reader = csv.reader(gtf, delimiter="\t")
+        writer = csv.writer(out, delimiter="\t")
+        exon_transcripts = defaultdict(list)
+        annotated_exon = set()
 
         for row in reader:
 
