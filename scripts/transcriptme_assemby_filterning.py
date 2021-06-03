@@ -137,7 +137,7 @@ def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_g
 
 
     #with open("/lustre/scratch117/cellgen/team218/gp7/Joe/RNA_seq_snakepipes/gffcompare/extended_ref_annotation.exon_black_list.tsv", "w") as out:
-    with open(black_list, "w) as out:
+    with open(black_list, "w") as out:
         writer = csv.writer(out, delimiter="\t")
 
         writer.writerow(["exon_coords", "exon_len",  "A_index", "strand", "first_exon", "last_exon", "max_poly(A)_len", "repeat_fraction", "exon_seq"])
