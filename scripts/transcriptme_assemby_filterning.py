@@ -34,6 +34,10 @@ def Genomictabulator(fasta):
 
 def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_gtf):
 
+    Genome = dict()
+    #Genomictabulator("/lustre/scratch117/cellgen/team218/gp7/Genome/GRCm38/GRCm38.fa")
+    Genomictabulator(genome_fasta)	
+	
     new_transcript_exons_info = dict()
     new_transcript_exons = set()
 
@@ -135,10 +139,6 @@ def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_g
 
 
 
-
-    Genome = dict()
-    #Genomictabulator("/lustre/scratch117/cellgen/team218/gp7/Genome/GRCm38/GRCm38.fa")
-    Genomictabulator(genome_fasta)
 
 
     #with open("/lustre/scratch117/cellgen/team218/gp7/Joe/RNA_seq_snakepipes/gffcompare/extended_ref_annotation.exon_black_list.tsv", "w") as out:
