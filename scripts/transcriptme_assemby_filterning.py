@@ -92,65 +92,64 @@ def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_g
                 else:
                     annotated_exon.add((chrom, start, end))
 
-	annotated_exon_bed = pybedtools.BedTool(list(annotated_exon))
-	new_transcript_exons_bed = pybedtools.BedTool(list(new_transcript_exons))
+    annotated_exon_bed = pybedtools.BedTool(list(annotated_exon))
+    new_transcript_exons_bed = pybedtools.BedTool(list(new_transcript_exons))
 
-	not_intersecting_exons = set([tuple(x) for x in new_transcript_exons_bed.intersect(annotated_exon_bed, v=True)]) 
+    not_intersecting_exons = set([tuple(x) for x in new_transcript_exons_bed.intersect(annotated_exon_bed, v=True)]) 
 
-	#repeatmasker = pybedtools.BedTool("/lustre/scratch117/cellgen/team218/gp7/Genome/mm10/Tracks/Repeats/repeat_masker.mm10.bed")
-	repeatmasker = pybedtools.BedTool(repeat_masker)
+    #repeatmasker = pybedtools.BedTool("/lustre/scratch117/cellgen/team218/gp7/Genome/mm10/Tracks/Repeats/repeat_masker.mm10.bed")
+    repeatmasker = pybedtools.BedTool(repeat_masker)
 
-	repeat_overlap = new_transcript_exons_bed.window(repeatmasker, w=0).overlap(cols=[2,3,2,3])
-
-
-	exon_repeat_range = defaultdict(set)
-
-	for row in list(repeat_overlap):    
+    repeat_overlap = new_transcript_exons_bed.window(repeatmasker, w=0).overlap(cols=[2,3,2,3])
 
 
-	    exon = tuple(row[:3])
-	    exon_len = int(row[2])-int(row[1])
+    exon_repeat_range = defaultdict(set)
+
+    for row in list(repeat_overlap):    
 
 
-
-	    e_start= int(row[1])
-	    e_end = int(row[2])
-	    r_start = int(row[4])
-	    r_end = int(row[5])
-
-	    ref_start = min(e_start, r_start)
-
-	    overlap = range(max(e_start-ref_start, r_start-ref_start), min(e_end-ref_start, r_end-ref_start))
-
-	    for i in overlap:
-		    exon_repeat_range[exon].add(i)
-
-
-	exon_repeat_size = dict()
-
-	for exon, overlap in exon_repeat_range.items():
-
-	    exon_repeat_size[exon] = len(overlap)
+        exon = tuple(row[:3])
+        exon_len = int(row[2])-int(row[1])
 
 
 
+        e_start= int(row[1])
+        e_end = int(row[2])
+        r_start = int(row[4])
+        r_end = int(row[5])
+
+        ref_start = min(e_start, r_start)
+
+        overlap = range(max(e_start-ref_start, r_start-ref_start), min(e_end-ref_start, r_end-ref_start))
+
+        for i in overlap:
+            exon_repeat_range[exon].add(i)
 
 
-	Genome = dict()
-	#Genomictabulator("/lustre/scratch117/cellgen/team218/gp7/Genome/GRCm38/GRCm38.fa")
-	Genomictabulator(genome_fasta)
+    exon_repeat_size = dict()
+
+    for exon, overlap in exon_repeat_range.items():
+
+        exon_repeat_size[exon] = len(overlap)
 
 
-	#with open("/lustre/scratch117/cellgen/team218/gp7/Joe/RNA_seq_snakepipes/gffcompare/extended_ref_annotation.exon_black_list.tsv", "w") as out:
-	with open(black_list) as out:
 
-	    writer = csv.writer(out, delimiter="\t")
 
-	    writer.writerow(["exon_coords", "exon_len",  "A_index", "strand", "first_exon", "last_exon", "max_poly(A)_len", "repeat_fraction", "exon_seq"])
 
-	    exon_black_list = set()
+    Genome = dict()
+    #Genomictabulator("/lustre/scratch117/cellgen/team218/gp7/Genome/GRCm38/GRCm38.fa")
+    Genomictabulator(genome_fasta)
 
-	    for exon in new_transcript_exons_info:
+
+    #with open("/lustre/scratch117/cellgen/team218/gp7/Joe/RNA_seq_snakepipes/gffcompare/extended_ref_annotation.exon_black_list.tsv", "w") as out:
+    with open(black_list) as out:
+        writer = csv.writer(out, delimiter="\t")
+
+        writer.writerow(["exon_coords", "exon_len",  "A_index", "strand", "first_exon", "last_exon", "max_poly(A)_len", "repeat_fraction", "exon_seq"])
+
+        exon_black_list = set()
+
+        for exon in new_transcript_exons_info:
 
 
 
@@ -204,35 +203,28 @@ def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_g
 
 
                 if exon in exon_black_list:
-
                     writer.writerow([exon_coords, len(exon_seq),  A_index, exon_info["strand"], first_exon, last_exon, exon_info["exon_number"], poliA_len, repeat_fraction, exon_seq])
 
 
-	transcript_black_list = set([])
+    transcript_black_list = set([])
 
-	for exon in exon_black_list:
-
-	    for t in exon_transcripts[exon]:
-
-		    transcript_black_list.add(t)
+    for exon in exon_black_list:
+        for t in exon_transcripts[exon]:
+            transcript_black_list.add(t)
 
 
 	#with open("/lustre/scratch117/cellgen/team218/gp7/Joe/RNA_seq_snakepipes/gffcompare/extended_ref_annotation.gtf") as gtf, \
 	#open("/lustre/scratch117/cellgen/team218/gp7/Joe/RNA_seq_snakepipes/gffcompare/extended_ref_annotation.manual_filter.gtf", "w") as out:
 		
-	with open(extended_ref_annotation) as gtf, open(out_gtf, "w") as out:
+    with open(extended_ref_annotation) as gtf, open(out_gtf, "w") as out:
 
 
 	    reader = csv.reader(gtf, delimiter="\t")
 	    writer = csv.writer(out, delimiter="\t")
-
 	    exon_transcripts = defaultdict(list)
-
-
-
 	    annotated_exon = set()
 
-	    for row in reader:
+        for row in reader:
 
             chrom = row[0]
             start = row[3]
