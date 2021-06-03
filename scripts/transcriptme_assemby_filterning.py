@@ -78,8 +78,8 @@ def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_g
                 ID = ID.strip('"') 
 
                 info[ID_type] = ID
-			if ID_type == "transcript_id":
-			    transcript = ID
+                if ID_type == "transcript_id":
+                    transcript = ID
 
 		if feature == "exon":
 		    exon = (chrom, strand, start, end)
