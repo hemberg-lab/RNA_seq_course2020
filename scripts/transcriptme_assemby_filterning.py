@@ -68,29 +68,29 @@ def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_g
 		    info["strand"] = strand
 		    info["end"] = end       
 
-		for t in tags:
-		    pair =  t.strip(" ").split(' "')
-		    if pair!=['']:
-                if len(pair)!=2:
-                    print(row)
-                ID_type, ID  = pair
+            for t in tags:
+                pair =  t.strip(" ").split(' "')
+                if pair!=['']:
+                    if len(pair)!=2:
+                        print(row)
+                    ID_type, ID  = pair
 
-                ID = ID.strip('"') 
+                    ID = ID.strip('"') 
 
-                info[ID_type] = ID
-                if ID_type == "transcript_id":
-                    transcript = ID
+                    info[ID_type] = ID
+                    if ID_type == "transcript_id":
+                        transcript = ID
 
-		if feature == "exon":
-		    exon = (chrom, strand, start, end)
-		    exon_transcripts[exon].append(transcript)
-		    transcript_n_exons[transcript] += 1
+            if feature == "exon":
+                exon = (chrom, strand, start, end)
+                exon_transcripts[exon].append(transcript)
+                transcript_n_exons[transcript] += 1
 
-		    if source=="StringTie":
-                new_transcript_exons.add((chrom, start, end))
-                new_transcript_exons_info[exon] = info       
-		    else:
-			    annotated_exon.add((chrom, start, end))
+                if source=="StringTie":
+                    new_transcript_exons.add((chrom, start, end))
+                    new_transcript_exons_info[exon] = info       
+                else:
+                    annotated_exon.add((chrom, start, end))
 
 	annotated_exon_bed = pybedtools.BedTool(list(annotated_exon))
 	new_transcript_exons_bed = pybedtools.BedTool(list(new_transcript_exons))
