@@ -8,8 +8,28 @@ import pybedtools
 import sys
 import csv
 
+from Bio import SeqIO
+from Bio.Seq import Seq
+
+
 csv.field_size_limit(100000000)
 csv.field_size_limit()
+
+
+
+
+def Genomictabulator(fasta):
+
+
+
+	f = open(fasta)
+
+	for chrfa in SeqIO.parse(f, "fasta"):
+		Genome[chrfa.id] = chrfa.seq
+
+
+
+	f.close()
 
 
 def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_gtf):
@@ -113,20 +133,7 @@ def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_g
 	    exon_repeat_size[exon] = len(overlap)
 
 
-	from Bio import SeqIO
-	from Bio.Seq import Seq
-	def Genomictabulator(fasta):
 
-
-
-		f = open(fasta)
-
-		for chrfa in SeqIO.parse(f, "fasta"):
-			Genome[chrfa.id] = chrfa.seq
-
-
-
-		f.close()
 
 
 	Genome = dict()
