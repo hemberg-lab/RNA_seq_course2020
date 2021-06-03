@@ -239,13 +239,13 @@ def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_g
             for t in tags:
                 pair =  t.strip(" ").split(' "')
                 if pair!=['']:
-                ID_type, ID  = pair
+                    ID_type, ID  = pair
 
-                ID = ID.strip('"') 
+                    ID = ID.strip('"') 
 
-                info[ID_type] = ID
-                if ID_type == "transcript_id":
-                    transcript = ID
+                    info[ID_type] = ID
+                    if ID_type == "transcript_id":
+                        transcript = ID
 
             #n_exons = transcript_n_exons[transcript]
 
