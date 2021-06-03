@@ -34,24 +34,24 @@ def Genomictabulator(fasta):
 
 def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_gtf):
 
-	new_transcript_exons_info = dict()
-	new_transcript_exons = set()
+    new_transcript_exons_info = dict()
+    new_transcript_exons = set()
 
-	transcript_n_exons =  defaultdict(int)
+    transcript_n_exons =  defaultdict(int)
 
-	#with open("/lustre/scratch117/cellgen/team218/gp7/Joe/RNA_seq_snakepipes/gffcompare/extended_ref_annotation.gtf") as gtf:
-	with open(extended_ref_annotation) as gtf:
-
-
-	    reader = csv.reader(gtf, delimiter="\t")
-
-	    exon_transcripts = defaultdict(list)
+    #with open("/lustre/scratch117/cellgen/team218/gp7/Joe/RNA_seq_snakepipes/gffcompare/extended_ref_annotation.gtf") as gtf:
+    with open(extended_ref_annotation) as gtf:
 
 
+        reader = csv.reader(gtf, delimiter="\t")
 
-	    annotated_exon = set()
+        exon_transcripts = defaultdict(list)
 
-	    for row in reader:
+
+
+        annotated_exon = set()
+
+        for row in reader:
 
             chrom = row[0]
             start = row[3]
