@@ -53,20 +53,20 @@ def main(genome_fasta, extended_ref_annotation, repeat_masker, black_list, out_g
 
 	    for row in reader:
 
-		chrom = row[0]
-		start = row[3]
-		end = row[4]
-		source = row[1]
-		feature = row[2]
-		strand = row[6]
-		tags = row[8].strip(" ").split(";")
+		    chrom = row[0]
+		    start = row[3]
+		    end = row[4]
+		    source = row[1]
+		    feature = row[2]
+		    strand = row[6]
+		    tags = row[8].strip(" ").split(";")
 
-		info =  dict()
+		    info =  dict()
 
-		info["chrom"] = chrom
-		info["start"] =  start
-		info["strand"] = strand
-		info["end"] = end       
+		    info["chrom"] = chrom
+		    info["start"] =  start
+		    info["strand"] = strand
+		    info["end"] = end       
 
 		for t in tags:
 		    pair =  t.strip(" ").split(' "')
