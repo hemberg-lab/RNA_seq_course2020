@@ -12,11 +12,21 @@
         "tCPU"      : "99999"
     },
 
-
-
     "hisat2_Genome_index" :
     {
-        "nCPUs"     : 7
+        "queue"     : "normal",
+        "nCPUs"     : 16,
+        "memory"    : 240000,
+        "resources" : "\"select[mem>240000] rusage[mem=240000] span[hosts=1]\"",
+    },
+
+
+
+    "deduplicate" :
+    {
+        "memory"    : 40000,
+        "queue" : long,
+        "resources" : "\"select[mem>40000] rusage[mem=40000] span[hosts=1]\"",
     },
 
 

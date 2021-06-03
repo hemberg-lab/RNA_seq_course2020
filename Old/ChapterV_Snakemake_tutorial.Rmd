@@ -1,3 +1,0 @@
-# 5. Snakemake Tutorial
-
-Snakemake is one of the most used workflow managers, during this section we will learn the basics. For this purpose, we are going to do review some of the (material)[http://slides.com/johanneskoester/snakemake-talk-40min#/] recently presented by Johannes Koester last month at University of Cambirdge. Then we are going follow (short tutorial)[https://snakemake.readthedocs.io/en/stable/tutorial/short.html] to learn the basics concepts of SnakeMake.

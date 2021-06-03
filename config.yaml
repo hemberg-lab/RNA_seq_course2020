@@ -1,7 +1,17 @@
 #This files store variables that can be read by snakemake
 
-assembly : "dm6"
+input_path : "/nfs/team205/jdj1/AS/bam_noribo/fastq_out/"
+
+assembly : "mm10"
 paired_end : False
 accession_list : './NCBI_accession_list.txt'
 download_transcriptome : True
-whippet_bin_folder : /home/curso/miniconda3/envs/julia_0.6.1/share/julia/site/v0.6/Whippet/bin
+whippet_bin_folder : /lustre/scratch117/cellgen/team218/gp7/miniconda/envs/julia_0.6.1/share/julia/site/v0.6/Whippet/bin
+
+samples : samples.tsv
+units : units.tsv
+group_by_cluster : True
+
+Genome : /lustre/scratch117/cellgen/team218/gp7/Genome/GRCm38/GRCm38.fa
+#Genome : /lustre/scratch117/cellgen/team218/gp7/Joe/RNA_seq_snakepipes/Masked_Genome/mm10.masked.fa
+GTF : /lustre/scratch117/cellgen/team218/gp7/Genome/GRCm38/Tracks/Gene_annotation/Mus_musculus.GRCm38.99.gtf
